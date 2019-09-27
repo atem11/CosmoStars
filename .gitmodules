@@ -1,0 +1,3 @@
+[submodule "topic_modeling"]
+	path = topic_modeling
+	url = https://github.com/mrMakaronka/topic_modeling.git
