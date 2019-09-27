@@ -1,5 +1,5 @@
 import vk_api as vk
-
+import json
 
 class Grubber:
 
@@ -9,5 +9,6 @@ class Grubber:
         self.api = self.session.get_api()
 
     def print_info(self, vk_id: str):
-        print(self.api.wall.get(owner_id=-1, domain=vk_id, cout=1))
+        user_id = self.api.users.get(user_ids=[vk_id])[0]['id']
+        print(json.dumps(self.api.wall.get(owner_id=-user_id, offset=148273753, extended=1), indent=2))
         return
