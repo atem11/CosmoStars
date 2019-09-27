@@ -1,4 +1,16 @@
+import configparser
+
 from grubber.vk_grubber import Grubber
 
-test = Grubber
-test.print_info("")
+
+def main():
+    config = configparser.ConfigParser()
+    config.read('../../resources/config.ini')
+    vk_token = config['DEFAULT']['vk_token']
+
+    test = Grubber(vk_token)
+    test.print_info("")
+
+
+if __name__ == "__main__":
+    main()

@@ -3,8 +3,8 @@ import vk
 
 class Grubber:
 
-    def __init__(self):
-        self.token = "78e2215a78e2215a78e2215a91788f3d73778e278e2215a256c671320107ea57d007f2a"
+    def __init__(self, vk_token: str):
+        self.token = vk_token
         self.session = vk.Session(access_token=self.token)
         self.api = vk.API(self.session)
         pass
