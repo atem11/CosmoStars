@@ -9,7 +9,7 @@ def main():
     vk_token = config['DEFAULT']['vk_token']
 
     test = Grubber(vk_token)
-    test.print_info("")
+    test.print_info("https://vk.com/alvinmax")
 
 
 if __name__ == "__main__":
