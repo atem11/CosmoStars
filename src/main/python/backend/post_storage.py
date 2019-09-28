@@ -114,6 +114,6 @@ class Storage:
     def posts(self, timestamp_start: int, timestamp_end: int):
         res = []
         for post in self.post_list:
-            if timestamp_start <= post['date'] * 1000 <= timestamp_end:
+            if timestamp_start <= post['date'] <= timestamp_end:
                 res.append(self.construct(post))
         return res

@@ -1,6 +1,9 @@
 import json
+import pickle
 import time
 from datetime import date, datetime
+import pandas as pd
+import numpy as np
 
 from flask import Flask, request
 
@@ -36,6 +39,8 @@ class Post:
 storage = post_storage.Storage()
 stories_grabber = StoriesGrabber()
 stories_grabber.grab(date(2019, 7, 1), date.today())
+
+sgd = pickle.load(open("src/main/storage/model.ml", 'rb'))
 
 
 @app.route('/celeb_list')
@@ -78,7 +83,24 @@ def liked_post():
 def posts():
     timestamp_start = int(request.args.get('time_start', 0))
     timestamp_finish = int(request.args.get('time_end', int(time.time() * 1000)))
-    return json.dumps([p.__dict__ for p in storage.posts(timestamp_start, timestamp_finish)], ensure_ascii=False)
+
+    texts = []
+    posts = storage.posts(timestamp_start, timestamp_finish)
+    for p in posts:
+        texts.append(p.content)
+    df = pd.Series(texts)
+    all_probs = sgd.predict_proba(df)
+    tags = sgd.classes_[np.argsort(-all_probs)]
+
+    json_list = []
+    for i in range(len(posts)):
+        probs = all_probs[i]
+        high_probable = sum(i > 0.1 for i in probs)
+        json_list.append({
+            'post': posts[i].__dict__,
+            'tags': list(tags[i][:high_probable])
+        })
+    return json.dumps(json_list, ensure_ascii=False)
 
 
 @app.route('/stories', methods=['GET'])
