@@ -14,6 +14,7 @@ class Storage:
         self.last_timestamp = int(time.time()) - 5500000
         self.vk_grubber = vk_grubber.Grubber(self.vk_token)
         self.post_list = []
+        self.liked_post = []
         self.refresh()
 
     def refresh(self):
@@ -60,6 +61,16 @@ class Storage:
                 )
                 break
         return post
+
+    def like(self, post_id: int):
+        post = self.post(post_id)
+        self.liked_post.append(post)
+
+    def dislike(self, post_id: int):
+        for post in self.liked_post:
+            if post.post_id == post_id:
+                self.liked_post.remove(post)
+                break
 
     def posts(self, timestamp_start: int, timestamp_end: int):
         res = []

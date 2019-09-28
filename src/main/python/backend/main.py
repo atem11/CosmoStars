@@ -51,6 +51,18 @@ def post():
     return storage.post(post_id)
 
 
+@app.route('/post_like', methods=['POST'])
+def post():
+    post_id = request.form['post_id']
+    return storage.like(post_id)
+
+
+@app.route('/post_dislike', methods=['POST'])
+def post():
+    post_id = request.form['post_id']
+    return storage.dislike(post_id)
+
+
 @app.route('/posts', methods=['POST'])
 def posts():
     timestamp_start = request.form['time_start']
