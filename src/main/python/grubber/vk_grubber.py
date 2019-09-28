@@ -5,18 +5,19 @@ class Grubber:
 
     def __init__(self, vk_token: str):
         self.token = vk_token
-        self.session = vk.VkApi(token=self.token)
+        self.session = vk.VkApi(token=self.token, api_version="5.101")
         self.api = self.session.get_api()
 
     def user_info(self, vk_id: int):
-        user = self.api.users.get(user_ids=[vk_id])[0]
+        user = self.api.users.get(user_ids=[vk_id], lang=0)[0]
         return user
 
     def posts(self, vk_id: int, timestamp: int, offset: int):
-        user = self.api.users.get(user_ids=[vk_id], fields='photo_200')[0]
-        print("grub " + user['first_name'] + " " + user['last_name'])
+        user = self.api.users.get(user_ids=[vk_id], fields='photo_200', lang=0)[0]
+        full_name = user['first_name'] + " " + user['last_name']
+        print("grub " + full_name)
         try:
-            post_list = self.api.wall.get(owner_id=user['id'], offset=offset, count=100)
+            post_list = self.api.wall.get(owner_id=user['id'], offset=offset, count=100, lang=0)
             ans_list = []
             for post in post_list['items']:
                 if int(post['date']) > timestamp:
@@ -26,7 +27,7 @@ class Grubber:
                                 'date': post['date'],
                                 'text': post['text'],
                                 'attachments': [],
-                                'author': user['first_name'] + " " + user['last_name'],
+                                'author': full_name,
                                 'avatar_source': "https://vk.com/images/camera_200.png",
                                 'likes': post['likes']['count'],
                                 'reposts': post['reposts']['count']
@@ -45,5 +46,5 @@ class Grubber:
                         ans_list.append(item)
             return ans_list
         except vk.exceptions.ApiError:
-            print("wall closed " + user['first_name'] + " " + user['last_name'])
+            print("wall closed " + full_name)
             return []

@@ -14,37 +14,62 @@ class Storage:
         self.vk_token = config['DEFAULT']['vk_token']
         self.celeb_list = config['DEFAULT']['celeb_list']
         self.storage_path = config['DEFAULT']['storage']
+        self.storage_celeb = config['DEFAULT']['celebs']
         self.last_timestamp = int(time.time()) - 5500000
         self.vk_grubber = vk_grubber.Grubber(self.vk_token)
+
+        self.celeb_ids = set()
+        self.celeb_names = []
+
         self.post_list = []
         self.liked_post = []
+
+        if os.path.exists(self.storage_celeb):
+            with open(self.storage_celeb, "r") as f:
+                self.celeb_names = json.load(f)
+            for celeb in self.celeb_names:
+                self.celeb_ids.add(int(celeb['id']))
+        else:
+            with open(self.celeb_list, "r") as f:
+                for _id in f:
+                    self.celeb_ids.add(int(_id))
+            self.refresh_celeb()
+
         if os.path.exists(self.storage_path):
             with open(self.storage_path, "r") as f:
                 self.post_list = json.load(f)
         else:
             self.refresh()
-            self.save(self.post_list)
 
-    def save(self, post_list):
+    def save_celeb(self):
+        (dirs, file) = os.path.split(self.storage_celeb)
+        os.makedirs(dirs, exist_ok=True)
+        with open(self.storage_celeb, "w") as f:
+            f.write(json.dumps(self.celeb_names, ensure_ascii=False))
+
+    def refresh_celeb(self):
+        upd = []
+        for _id in self.celeb_ids:
+            usr = self.vk_grubber.user_info(_id)
+            upd.append({'id': _id,
+                        'name': usr['first_name'] + " " + usr['last_name']
+                        })
+        self.celeb_names = upd
+        self.save_celeb()
+
+    def save_data(self):
         (dirs, file) = os.path.split(self.storage_path)
         os.makedirs(dirs, exist_ok=True)
-        with open(self.storage_path, "a") as f:
-            self.last_timestamp = self.post_list[-1]['date']
-            f.write(json.dumps(post_list, ensure_ascii=False))
+        with open(self.storage_path, "w") as f:
+            f.write(json.dumps(self.post_list, ensure_ascii=False))
 
     def refresh(self):
-        with open(self.celeb_list, "r") as ids:
-            upd = []
-            _ids = set()
-            for celeb_id in ids:
-                _ids.add(int(celeb_id))
-
-            for _id in _ids:
-                upd.extend(self.vk_grubber.posts(int(_id), self.last_timestamp, 0))
-            upd = sorted(upd, key=lambda post: post['date'])
-
-            self.post_list.extend(upd)
-            self.save(upd)
+        upd = []
+        for _id in self.celeb_ids:
+            upd.extend(self.vk_grubber.posts(int(_id), self.last_timestamp, 0))
+        upd = sorted(upd, key=lambda post: post['date'])
+        self.post_list.extend(upd)
+        self.save_data()
 
     def celeb_lst(self):
         ids = open(self.celeb_list, "r")
