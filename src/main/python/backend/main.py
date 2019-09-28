@@ -1,5 +1,4 @@
 from flask import Flask, request
-from itertools import islice
 from backend import post_storage
 
 import time
@@ -33,7 +32,7 @@ class Celeb:
         self.name = first_name + ' ' + last_name
 
 
-storage = post_storage.Storage(1564617500)
+storage = post_storage.Storage()
 
 
 @app.route('/celeb_list')
@@ -46,19 +45,10 @@ def refresh():
     storage.refresh()
 
 
-@app.route('/liked_posts')
-def liked_posts():
-    start_timestamp = int(request.args.get("timestamp", time.time() * 1000))
-    count = int(request.args.get("count", 5))
-
-    posts = islice(filter(lambda post: post.timestamp <= start_timestamp, liked_posts), 0, count)
-    return json.dumps(list(map(lambda post: post.__dict__, posts)))
-
-
-@app.route('/like', methods=['POST'])
-def like():
+@app.route('/post', methods=['POST'])
+def post():
     post_id = request.form['post_id']
-    liked_posts.extend(filter(lambda post: post.post_id == post_id))
+    return storage.post(post_id)
 
 
 @app.after_request

@@ -14,6 +14,7 @@ class Grubber:
 
     def posts(self, vk_id: int, timestamp: int):
         user = self.api.users.get(user_ids=[vk_id], fields='photo_200')[0]
+        print("grub " + user['first_name'] + " " + user['last_name'])
         try:
             post_list = self.api.wall.get(owner_id=user['id'], count=100, filter="owner")
             ans_list = []

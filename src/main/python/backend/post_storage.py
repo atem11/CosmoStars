@@ -6,12 +6,12 @@ from grubber import vk_grubber
 
 
 class Storage:
-    def __init__(self, timestamp: int):
+    def __init__(self):
         config = configparser.ConfigParser()
-        config.read('../../resources/config.ini')
-        self.celeb_list = config['DEFAULT']['celeb_list']
+        config.read('src/main/resources/config.ini')
         self.vk_token = config['DEFAULT']['vk_token']
-        self.last_timestamp = timestamp
+        self.celeb_list = config['DEFAULT']['celeb_list']
+        self.last_timestamp = int(time.time()) - 5500000
         self.vk_grubber = vk_grubber.Grubber(self.vk_token)
         self.post_list = []
         self.refresh()
@@ -44,10 +44,27 @@ class Storage:
 
         return res
 
+    def post(self, post_id: int):
+        post = ''
+        for post in self.post_list:
+            if post['id'] == post_id:
+                post = main.Post(
+                    post['id'],
+                    post['author'],
+                    post['avatar_source'],
+                    post['owner_id'],
+                    post['text'],
+                    post['date'],
+                    post['likes'],
+                    post['reposts']
+                )
+                break
+        return post
+
     def posts(self, timestamp_start: int, timestamp_end: int):
         res = []
         for post in self.post_list:
-            if post['data'] >= timestamp_start & post['data'] <= timestamp_end:
+            if timestamp_start <= post['data'] <= timestamp_end:
                 res.append(main.Post(
                     post['id'],
                     post['author'],
