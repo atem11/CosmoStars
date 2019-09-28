@@ -12,11 +12,11 @@ class Grubber:
         user = self.api.users.get(user_ids=[vk_id])[0]
         return user
 
-    def posts(self, vk_id: int, timestamp: int):
+    def posts(self, vk_id: int, timestamp: int, offset: int):
         user = self.api.users.get(user_ids=[vk_id], fields='photo_200')[0]
         print("grub " + user['first_name'] + " " + user['last_name'])
         try:
-            post_list = self.api.wall.get(owner_id=user['id'], count=100, filter="owner")
+            post_list = self.api.wall.get(owner_id=user['id'], offset=offset, count=100)
             ans_list = []
             for post in post_list['items']:
                 if int(post['date']) > timestamp:

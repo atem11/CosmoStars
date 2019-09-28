@@ -24,7 +24,7 @@ class Storage:
             _ids.add(int(celeb_id))
 
         for _id in _ids:
-            upd.extend(self.vk_grubber.posts(int(_id), self.last_timestamp))
+            upd.extend(self.vk_grubber.posts(int(_id), self.last_timestamp, 0))
         upd = sorted(upd, key=lambda post: post['date'])
 
         self.post_list.extend(upd)

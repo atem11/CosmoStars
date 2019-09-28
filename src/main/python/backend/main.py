@@ -51,6 +51,13 @@ def post():
     return storage.post(post_id)
 
 
+@app.route('/posts', methods=['POST'])
+def posts():
+    timestamp_start = request.form['time_start']
+    timestamp_finish = request.form['time_end']
+    return storage.posts(timestamp_start, timestamp_finish)
+
+
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')

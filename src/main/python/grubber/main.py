@@ -20,7 +20,9 @@ def main():
     for celeb_id in _ids:
         cnt += 1
         print("grub celeb num=" + str(cnt) + " id=" + str(celeb_id))
-        res = test.posts(celeb_id, 1564617500)  # 2019/august/01 00:00:00
+        res = test.posts(celeb_id, 0, 0)  # 2019/august/01 00:00:00 1564617500
+        result.extend(res)
+        res = test.posts(celeb_id, 0, 100)
         result.extend(res)
 
     result = sorted(result, key=lambda post: post['date'])
