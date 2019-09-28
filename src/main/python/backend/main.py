@@ -100,6 +100,11 @@ def liked_post():
     return json.dumps(ans, ensure_ascii=False)
 
 
+@app.route('/tags', methods=['GET'])
+def tags():
+    return json.dumps(list(sgd.classes_), ensure_ascii=False)
+
+
 @app.route('/posts', methods=['GET'])
 def posts():
     timestamp_start = int(int(request.args.get('time_start', 0)) / 1000)
