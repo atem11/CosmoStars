@@ -1,3 +1,4 @@
+import configparser
 import json
 import pickle
 import time
@@ -41,11 +42,18 @@ storage = post_storage.Storage()
 stories_grabber = StoriesGrabber()
 # stories_grabber.grab(date(2019, 7, 1), date.today())
 
-search = whoosh_search.Searcher("src/main/storage/index")
-search.create(storage.post_list)
-res = search.search("Полный список Умного голосования на выборах в Мосгордуму 2019")
-for _id in res:
-    print(json.dumps(storage.post_by_id(_id), ensure_ascii=False))
+config = configparser.ConfigParser()
+config.read('src/main/resources/config.ini')
+create = False
+if config['DEFAULT']['create_index'] == "True":
+    create = True
+search = whoosh_search.Searcher(config['DEFAULT']['index_root'], create)
+if create:
+    search.create(storage.post_list)
+#
+# res = search.search("Полный список Умного голосования на выборах в Мосгордуму 2019")
+# for _id in res:
+#     print(json.dumps(storage.post_by_id(_id), ensure_ascii=False))
 
 sgd = pickle.load(open("src/main/storage/model.ml", 'rb'))
 
@@ -57,7 +65,8 @@ def celeb_list():
 
 @app.route('/refresh')
 def refresh():
-    storage.refresh()
+    upd = storage.refresh()
+    search.update(upd)
 
 
 @app.route('/post', methods=['GET'])

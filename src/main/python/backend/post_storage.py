@@ -75,6 +75,7 @@ class Storage:
         upd = sorted(upd, key=lambda post: post['date'])
         self.post_list.extend(upd)
         self.save_data()
+        return upd
 
     def celeb_lst(self):
         return self.celeb_names

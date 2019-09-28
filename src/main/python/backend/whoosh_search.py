@@ -1,24 +1,29 @@
 import os
 import emoji
 from whoosh import qparser
-from whoosh.index import create_in
+from whoosh.index import create_in, open_dir
 from whoosh.fields import Schema, TEXT, ID
 from whoosh.qparser import QueryParser
 
 
 class Searcher:
-    def __init__(self, root):
+    def __init__(self, root, create=False):
         self.root = root
         if not os.path.exists(root):
-            os.mkdir(root)
-        schema = Schema(id=ID(stored=True), content=TEXT)
-        self.ix = create_in(root, schema)
-        self.parser = QueryParser("content", self.ix.schema, group=qparser.OrGroup)
+            os.makedirs(root, exist_ok=True)
+        self.schema = Schema(id=ID(stored=True), content=TEXT)
+        if not create:
+            self.ix = open_dir(root)
+            self.parser = QueryParser("content", self.ix.schema, group=qparser.OrGroup)
 
     def create(self, posts: list):
-        writer = self.ix.writer()
+        self.ix = create_in(self.root, self.schema)
+        self.parser = QueryParser("content", self.ix.schema, group=qparser.OrGroup)
+        self.update(posts)
 
-        for post in posts:
+    def update(self, upd: list):
+        writer = self.ix.writer()
+        for post in upd:
             text = post['text']
             text = emoji.get_emoji_regexp().sub(r'.', text)
             if text != "":
