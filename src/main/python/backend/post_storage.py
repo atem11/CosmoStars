@@ -72,17 +72,7 @@ class Storage:
         self.save_data()
 
     def celeb_lst(self):
-        ids = open(self.celeb_list, "r")
-        res = []
-        _ids = set()
-        for celeb_id in ids:
-            _ids.add(int(celeb_id))
-
-        for celeb_id in _ids:
-            user = self.vk_grubber.user_info(celeb_id)
-            res.append(user['first_name'] + " " + user['last_name'])
-
-        return res
+        return self.celeb_names
 
     def post(self, post_id: int):
         post = ''

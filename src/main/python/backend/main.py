@@ -39,7 +39,7 @@ storage = post_storage.Storage()
 
 @app.route('/celeb_list')
 def celeb_list():
-    return json.dump(storage.celeb_lst())
+    return json.dumps(storage.celeb_lst(), ensure_ascii=False)
 
 
 @app.route('/refresh')
@@ -47,10 +47,10 @@ def refresh():
     storage.refresh()
 
 
-@app.route('/post', methods=['POST'])
+@app.route('/post', methods=['GET'])
 def post():
     post_id = request.form['post_id']
-    return storage.post(post_id)
+    return json.dumps(storage.post(post_id), ensure_ascii=False)
 
 
 @app.route('/post_like', methods=['POST'])
@@ -67,14 +67,14 @@ def dis():
 
 @app.route('/liked_posts')
 def liked_post():
-    return storage.liked_post
+    return json.dumps(storage.liked_post, ensure_ascii=False)
 
 
 @app.route('/posts', methods=['GET'])
 def posts():
     timestamp_start = int(request.args.get('time_start', 0))
     timestamp_finish = int(request.args.get('time_end', int(time.time() * 1000)))
-    return json.dumps([p.__dict__ for p in storage.posts(timestamp_start, timestamp_finish)])
+    return json.dumps([p.__dict__ for p in storage.posts(timestamp_start, timestamp_finish)], ensure_ascii=False)
 
 
 @app.after_request
