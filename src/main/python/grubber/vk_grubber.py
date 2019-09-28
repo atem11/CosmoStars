@@ -23,6 +23,7 @@ class Grubber:
                 if int(post['date']) > timestamp:
                     if post['owner_id'] == user['id']:
                         item = {'id': post['id'],
+                                'status': "unknown",
                                 'owner_id': post['owner_id'],
                                 'date': post['date'],
                                 'text': post['text'],

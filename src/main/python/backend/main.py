@@ -67,7 +67,10 @@ def dis():
 
 @app.route('/liked_posts')
 def liked_post():
-    return json.dumps(storage.liked_post, ensure_ascii=False)
+    res = []
+    for p in storage.liked_post:
+        res.append(storage.construct(p))
+    return json.dumps(res, ensure_ascii=False)
 
 
 @app.route('/posts', methods=['GET'])

@@ -35,6 +35,10 @@ class Storage:
                     self.celeb_ids.add(int(_id))
             self.refresh_celeb()
 
+        for post in self.post_list:
+            if post['status'] == "liked":
+                self.liked_post.append(post)
+
         if os.path.exists(self.storage_path):
             with open(self.storage_path, "r") as f:
                 self.post_list = json.load(f)
@@ -74,47 +78,41 @@ class Storage:
     def celeb_lst(self):
         return self.celeb_names
 
-    def post(self, post_id: int):
-        post = ''
+    def post_by_id(self, post_id: int):
         for post in self.post_list:
             if post['id'] == post_id:
-                post = main.Post(
-                    post['id'],
-                    'unknown',
-                    post['author'],
-                    post['avatar_source'],
-                    post['owner_id'],
-                    post['text'],
-                    post['date'],
-                    post['likes'],
-                    post['reposts']
-                )
-                break
-        return post
+                return post
+
+    @staticmethod
+    def construct(post):
+        return main.Post(
+            post['id'],
+            post['status'],
+            post['author'],
+            post['avatar_source'],
+            post['owner_id'],
+            post['text'],
+            post['date'],
+            post['likes'],
+            post['reposts']
+        )
+
+    def post(self, post_id: int):
+        return self.construct(self.post_by_id(post_id))
 
     def like(self, post_id: int):
-        post = self.post(post_id)
+        post = self.post_by_id(post_id)
+        post['status'] = "liked"
         self.liked_post.append(post)
 
     def dislike(self, post_id: int):
-        for post in self.liked_post:
-            if post.post_id == post_id:
-                self.liked_post.remove(post)
-                break
+        post = self.post_by_id(post_id)
+        post['status'] = "disliked"
+        self.liked_post.remove(post)
 
     def posts(self, timestamp_start: int, timestamp_end: int):
         res = []
         for post in self.post_list:
             if timestamp_start <= post['date'] * 1000 <= timestamp_end:
-                res.append(main.Post(
-                    post['id'],
-                    'unknown',
-                    post['author'],
-                    post['avatar_source'],
-                    post['owner_id'],
-                    post['text'],
-                    post['date'] * 1000,
-                    post['likes'],
-                    post['reposts']
-                ))
+                res.append(self.construct(post))
         return res
