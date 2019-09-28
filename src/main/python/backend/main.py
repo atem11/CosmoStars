@@ -2,7 +2,7 @@ import configparser
 import json
 import pickle
 import time
-from datetime import datetime
+from datetime import date, datetime
 import pandas as pd
 import numpy as np
 
@@ -39,8 +39,9 @@ class Post:
 
 
 storage = post_storage.Storage()
+
 stories_grabber = StoriesGrabber()
-# stories_grabber.grab(date(2019, 7, 1), date.today())
+stories_grabber.grab(date(2019, 7, 1), date.today())
 
 config = configparser.ConfigParser()
 config.read('src/main/resources/config.ini')
