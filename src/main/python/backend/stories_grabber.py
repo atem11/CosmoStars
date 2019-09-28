@@ -36,13 +36,14 @@ class StoriesGrabber:
         result = []
         for single_date in self._daterange(from_date, to_date):
             if single_date in self._cache:
-                result.append(self._cache[single_date])
+                result.extend(self._cache[single_date])
             else:
                 cache_line = []
                 month = StoriesGrabber.MONTH_MAPPER[single_date.month]
                 url = u"https://ru.wikinews.org/w/index.php?title=Служебная:NewsFeed&feed=atom&categories=" + str(
                     single_date.day) + "_" + month + "_" + str(
-                    single_date.year) + "%7CОпубликовано&notcategories=Не%20публиковать&namespace=0&count=15&ordermethod=categoryadd&stablepages=only"
+                    single_date.year) + "%7CОпубликовано&notcategories=Не%20публиковать&namespace=0&count=15" \
+                                        "&ordermethod=categoryadd&stablepages=only "
 
                 cache_file = Path("src/main/storage/stories/" + single_date.strftime("%d_%m_%Y"))
                 if cache_file.is_file():
@@ -56,9 +57,10 @@ class StoriesGrabber:
 
                 feed = feedparser.parse(content)
                 for post in feed.entries:
-                    cache_line.append(Story(single_date, post['title']))
+                    if "Лента новостей" not in post['title'] and "Ожидаемые события" not in post['title']:
+                        cache_line.append(Story(single_date, post['title']))
                 self._cache[single_date] = cache_line
-                result.append(cache_line)
+                result.extend(cache_line)
         return result
 
     @staticmethod
