@@ -33,11 +33,6 @@ class Post:
         self.reposts = reposts
 
 
-class Celeb:
-    def __init__(self, first_name: str, last_name: str):
-        self.name = first_name + ' ' + last_name
-
-
 storage = post_storage.Storage()
 stories_grabber = StoriesGrabber()
 stories_grabber.grab(date(2019, 7, 1), date.today())
