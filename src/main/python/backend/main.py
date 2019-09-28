@@ -1,9 +1,6 @@
 from flask import Flask, request
 from backend import post_storage
 
-import time
-import json
-
 app = Flask(__name__)
 
 
@@ -37,7 +34,7 @@ storage = post_storage.Storage()
 
 @app.route('/celeb_list')
 def celeb_list():
-    return storage.celeb_list()
+    return storage.celeb_lst()
 
 
 @app.route('/refresh')
@@ -52,15 +49,20 @@ def post():
 
 
 @app.route('/post_like', methods=['POST'])
-def post():
+def like():
     post_id = request.form['post_id']
     return storage.like(post_id)
 
 
 @app.route('/post_dislike', methods=['POST'])
-def post():
+def dis():
     post_id = request.form['post_id']
     return storage.dislike(post_id)
+
+
+@app.route('/liked_posts')
+def liked_post():
+    return storage.liked_post
 
 
 @app.route('/posts', methods=['POST'])

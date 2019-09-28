@@ -1,5 +1,7 @@
 import configparser
 import time
+import os
+import json
 
 from backend import main
 from grubber import vk_grubber
@@ -11,11 +13,25 @@ class Storage:
         config.read('src/main/resources/config.ini')
         self.vk_token = config['DEFAULT']['vk_token']
         self.celeb_list = config['DEFAULT']['celeb_list']
+        self.storage_path = config['DEFAULT']['storage']
         self.last_timestamp = int(time.time()) - 5500000
         self.vk_grubber = vk_grubber.Grubber(self.vk_token)
         self.post_list = []
         self.liked_post = []
-        self.refresh()
+        if os.path.exists(self.storage_path):
+            f = open(self.storage_path, "r")
+            for post in f:
+                self.post_list.append(post)
+        else:
+            self.refresh()
+            self.save(self.post_list)
+
+    def save(self, post_list):
+        (dirs, file) = os.path.split(self.storage_path)
+        os.makedirs(dirs, exist_ok=True)
+        f = open(self.storage_path, "a")
+        self.last_timestamp = self.post_list[-1]['date']
+        f.write(json.dumps(post_list, ensure_ascii=False))
 
     def refresh(self):
         ids = open(self.celeb_list, "r")
@@ -29,10 +45,10 @@ class Storage:
         upd = sorted(upd, key=lambda post: post['date'])
 
         self.post_list.extend(upd)
-        self.last_timestamp = int(time.time())
+        self.save(upd)
         return
 
-    def celeb_list(self):
+    def celeb_lst(self):
         ids = open(self.celeb_list, "r")
         res = []
         _ids = set()
