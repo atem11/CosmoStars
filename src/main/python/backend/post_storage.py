@@ -19,9 +19,8 @@ class Storage:
         self.post_list = []
         self.liked_post = []
         if os.path.exists(self.storage_path):
-            f = open(self.storage_path, "r")
-            for post in f:
-                self.post_list.append(post)
+            with open(self.storage_path, "r") as f:
+                self.post_list = json.load(f)
         else:
             self.refresh()
             self.save(self.post_list)
@@ -29,24 +28,23 @@ class Storage:
     def save(self, post_list):
         (dirs, file) = os.path.split(self.storage_path)
         os.makedirs(dirs, exist_ok=True)
-        f = open(self.storage_path, "a")
-        self.last_timestamp = self.post_list[-1]['date']
-        f.write(json.dumps(post_list, ensure_ascii=False))
+        with open(self.storage_path, "a") as f:
+            self.last_timestamp = self.post_list[-1]['date']
+            f.write(json.dumps(post_list, ensure_ascii=False))
 
     def refresh(self):
-        ids = open(self.celeb_list, "r")
-        upd = []
-        _ids = set()
-        for celeb_id in ids:
-            _ids.add(int(celeb_id))
+        with open(self.celeb_list, "r") as ids:
+            upd = []
+            _ids = set()
+            for celeb_id in ids:
+                _ids.add(int(celeb_id))
 
-        for _id in _ids:
-            upd.extend(self.vk_grubber.posts(int(_id), self.last_timestamp, 0))
-        upd = sorted(upd, key=lambda post: post['date'])
+            for _id in _ids:
+                upd.extend(self.vk_grubber.posts(int(_id), self.last_timestamp, 0))
+            upd = sorted(upd, key=lambda post: post['date'])
 
-        self.post_list.extend(upd)
-        self.save(upd)
-        return
+            self.post_list.extend(upd)
+            self.save(upd)
 
     def celeb_lst(self):
         ids = open(self.celeb_list, "r")
@@ -91,7 +89,7 @@ class Storage:
     def posts(self, timestamp_start: int, timestamp_end: int):
         res = []
         for post in self.post_list:
-            if timestamp_start <= post['data'] <= timestamp_end:
+            if timestamp_start <= post['date'] <= timestamp_end:
                 res.append(main.Post(
                     post['id'],
                     post['author'],

@@ -1,5 +1,6 @@
 from flask import Flask, request
 from backend import post_storage
+import time
 
 app = Flask(__name__)
 
@@ -65,10 +66,10 @@ def liked_post():
     return storage.liked_post
 
 
-@app.route('/posts', methods=['POST'])
+@app.route('/posts', methods=['GET'])
 def posts():
-    timestamp_start = request.form['time_start']
-    timestamp_finish = request.form['time_end']
+    timestamp_start = int(request.args.get('time_start', 0))
+    timestamp_finish = int(request.args.get('time_end', int(time.time() * 1000)))
     return storage.posts(timestamp_start, timestamp_finish)
 
 
