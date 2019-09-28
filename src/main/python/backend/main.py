@@ -125,19 +125,17 @@ def posts():
         high_probable = sum(i > 0.1 for i in probs)
         result_posts[i].tags = list(tags[i][:high_probable])
         json_list.append(result_posts[i].__dict__)
-    return json.dumps(json_list, ensure_ascii=False)
 
-
-@app.route('/stories', methods=['GET'])
-def stories():
-    from_ts = int(request.args['from'])
-    to_ts = int(request.args['to'])
-    grabbed = stories_grabber.grab(datetime.fromtimestamp(from_ts).date(), datetime.fromtimestamp(to_ts).date())
-    dict_list = list(map(lambda x: {
+    grabbed = stories_grabber.grab(datetime.fromtimestamp(timestamp_start).date(),
+                                   datetime.fromtimestamp(timestamp_finish).date())
+    stories_list = list(map(lambda x: {
         'title': x.title,
         'date': time.mktime(x.story_date.timetuple())
     }, grabbed))
-    return json.dumps(dict_list, ensure_ascii=False)
+    return json.dumps({
+        'posts': json_list,
+        'stories': stories_list
+    }, ensure_ascii=False)
 
 
 @app.after_request
