@@ -71,7 +71,8 @@ class StoriesGrabber:
 
 def main():
     stories_grabber = StoriesGrabber()
-    stories_grabber.grab(date(2019, 7, 1), date.today())
+    result = stories_grabber.grab(date(2019, 9, 1), date(2019, 9, 4))
+    print(result)
 
 
 if __name__ == "__main__":
