@@ -81,7 +81,7 @@ class Storage:
 
     def post_by_id(self, post_id: int):
         for post in self.post_list:
-            if post['id'] == post_id:
+            if post['id'] == int(post_id):
                 return post
 
     @staticmethod

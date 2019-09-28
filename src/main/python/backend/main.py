@@ -1,14 +1,16 @@
 import json
 import pickle
 import time
-from datetime import date, datetime
+from datetime import datetime
 import pandas as pd
 import numpy as np
+
 
 from flask import Flask, request
 
 from backend import post_storage
 from backend.stories_grabber import StoriesGrabber
+from backend import whoosh_search
 
 app = Flask(__name__)
 
@@ -38,7 +40,13 @@ class Post:
 
 storage = post_storage.Storage()
 stories_grabber = StoriesGrabber()
-stories_grabber.grab(date(2019, 7, 1), date.today())
+# stories_grabber.grab(date(2019, 7, 1), date.today())
+
+s = whoosh_search.Searcher("src/main/storage/index")
+s.create(storage.post_list)
+res = s.search("Полный список Умного голосования на выборах в Мосгордуму 2019")
+for _id in res:
+    print(json.dumps(storage.post_by_id(_id), ensure_ascii=False))
 
 sgd = pickle.load(open("src/main/storage/model.ml", 'rb'))
 
