@@ -106,7 +106,8 @@ class Storage:
     def like(self, post_id: int):
         post = self.post_by_id(post_id)
         post['status'] = "liked"
-        self.liked_post.append(post)
+        if not (post in self.liked_post):
+            self.liked_post.append(post)
 
     def dislike(self, post_id: int):
         post = self.post_by_id(post_id)
