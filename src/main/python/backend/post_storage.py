@@ -65,6 +65,7 @@ class Storage:
             if post['id'] == post_id:
                 post = main.Post(
                     post['id'],
+                    'unknown',
                     post['author'],
                     post['avatar_source'],
                     post['owner_id'],
@@ -92,6 +93,7 @@ class Storage:
             if timestamp_start <= post['date'] * 1000 <= timestamp_end:
                 res.append(main.Post(
                     post['id'],
+                    'unknown',
                     post['author'],
                     post['avatar_source'],
                     post['owner_id'],

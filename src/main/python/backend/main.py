@@ -7,8 +7,10 @@ app = Flask(__name__)
 
 
 class Post:
+    # status = 'liked', 'disliked' or 'unknown'
     def __init__(self,
                  post_id: str,
+                 status: str,
                  author: str,
                  avatar_source: str,
                  author_id: str,
@@ -17,6 +19,7 @@ class Post:
                  likes: int,
                  reposts: int):
         self.post_id = post_id
+        self.status = status
         self.author = author
         self.avatar_source = avatar_source
         self.author_id = author_id
