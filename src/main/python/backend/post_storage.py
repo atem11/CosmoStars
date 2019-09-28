@@ -90,6 +90,7 @@ class Storage:
         return main.Post(
             post['id'],
             post['status'],
+            post['domain'],
             post['author'],
             post['avatar_source'],
             post['owner_id'],

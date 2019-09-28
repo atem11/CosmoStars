@@ -22,6 +22,7 @@ class Post:
     def __init__(self,
                  post_id: str,
                  status: str,
+                 domain: str,
                  author: str,
                  avatar_source: str,
                  author_id: str,
@@ -31,6 +32,7 @@ class Post:
                  reposts: int):
         self.post_id = post_id
         self.status = status
+        self.domain = domain
         self.author = author
         self.avatar_source = avatar_source
         self.author_id = author_id

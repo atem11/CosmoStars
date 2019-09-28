@@ -13,7 +13,7 @@ class Grubber:
         return user
 
     def posts(self, vk_id: int, timestamp: int, offset: int):
-        user = self.api.users.get(user_ids=[vk_id], fields='photo_200', lang=0)[0]
+        user = self.api.users.get(user_ids=[vk_id], fields='photo_200, domain', lang=0)[0]
         full_name = user['first_name'] + " " + user['last_name']
         print("grub " + full_name)
         try:
@@ -25,6 +25,7 @@ class Grubber:
                         item = {'id': post['id'],
                                 'status': "unknown",
                                 'owner_id': post['owner_id'],
+                                'domain': user['domain'],
                                 'date': post['date'],
                                 'text': post['text'],
                                 'attachments': [],
