@@ -56,6 +56,7 @@ class Storage:
         for _id in self.celeb_ids:
             usr = self.vk_grubber.user_info(_id)
             upd.append({'id': _id,
+                        'domain': usr['domain'],
                         'name': usr['first_name'] + " " + usr['last_name']
                         })
         self.celeb_names = upd

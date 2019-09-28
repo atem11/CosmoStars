@@ -9,7 +9,7 @@ class Grubber:
         self.api = self.session.get_api()
 
     def user_info(self, vk_id: int):
-        user = self.api.users.get(user_ids=[vk_id], lang=0)[0]
+        user = self.api.users.get(user_ids=[vk_id], fields='domain', lang=0)[0]
         return user
 
     def posts(self, vk_id: int, timestamp: int, offset: int):
