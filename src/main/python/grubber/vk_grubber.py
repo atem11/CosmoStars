@@ -26,7 +26,7 @@ class Grubber:
                                 'text': post['text'],
                                 'attachments': [],
                                 'author': user['first_name'] + " " + user['last_name'],
-                                'avatar_source': "",
+                                'avatar_source': "https://vk.com/images/camera_200.png",
                                 'likes': post['likes']['count'],
                                 'reposts': post['reposts']['count']
                                 }

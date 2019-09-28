@@ -41,6 +41,11 @@ def celeb_list():
     return storage.celeb_list()
 
 
+@app.route('/refresh')
+def refresh():
+    storage.refresh()
+
+
 @app.route('/liked_posts')
 def liked_posts():
     start_timestamp = int(request.args.get("timestamp", time.time() * 1000))

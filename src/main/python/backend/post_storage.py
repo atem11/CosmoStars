@@ -1,6 +1,7 @@
 import configparser
 import time
 
+from backend import main
 from grubber import vk_grubber
 
 
@@ -41,4 +42,20 @@ class Storage:
             user = self.vk_grubber.user_info(celeb_id)
             res.append(user['first_name'] + " " + user['last_name'])
 
+        return res
+
+    def posts(self, timestamp_start: int, timestamp_end: int):
+        res = []
+        for post in self.post_list:
+            if post['data'] >= timestamp_start & post['data'] <= timestamp_end:
+                res.append(main.Post(
+                    post['id'],
+                    post['author'],
+                    post['avatar_source'],
+                    post['owner_id'],
+                    post['text'],
+                    post['date'],
+                    post['likes'],
+                    post['reposts']
+                ))
         return res
