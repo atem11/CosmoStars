@@ -5,7 +5,6 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 
-
 from flask import Flask, request
 
 from backend import post_storage
@@ -42,9 +41,9 @@ storage = post_storage.Storage()
 stories_grabber = StoriesGrabber()
 # stories_grabber.grab(date(2019, 7, 1), date.today())
 
-s = whoosh_search.Searcher("src/main/storage/index")
-s.create(storage.post_list)
-res = s.search("Полный список Умного голосования на выборах в Мосгордуму 2019")
+search = whoosh_search.Searcher("src/main/storage/index")
+search.create(storage.post_list)
+res = search.search("Полный список Умного голосования на выборах в Мосгордуму 2019")
 for _id in res:
     print(json.dumps(storage.post_by_id(_id), ensure_ascii=False))
 
@@ -81,31 +80,41 @@ def dis():
 
 @app.route('/liked_posts')
 def liked_post():
-    res = []
+    ans = []
     for p in storage.liked_post:
-        res.append(storage.construct(p))
-    return json.dumps(res, ensure_ascii=False)
+        ans.append(storage.construct(p))
+    return json.dumps(ans, ensure_ascii=False)
 
 
 @app.route('/posts', methods=['GET'])
 def posts():
     timestamp_start = int(request.args.get('time_start', 0))
     timestamp_finish = int(request.args.get('time_end', int(time.time() * 1000)))
+    query = request.args.get('query', None)
 
     texts = []
-    posts = storage.posts(timestamp_start, timestamp_finish)
-    for p in posts:
+    result_posts = []
+    if query is None:
+        result_posts.extend(storage.posts(timestamp_start, timestamp_finish))
+    else:
+        ids = search.search(query)
+        for post_id in ids:
+            find = storage.post(post_id)
+            result_posts.append(find)
+
+    for p in result_posts:
         texts.append(p.content)
+
     df = pd.Series(texts)
     all_probs = sgd.predict_proba(df)
     tags = sgd.classes_[np.argsort(-all_probs)]
 
     json_list = []
-    for i in range(len(posts)):
+    for i in range(len(result_posts)):
         probs = all_probs[i]
         high_probable = sum(i > 0.1 for i in probs)
         json_list.append({
-            'post': posts[i].__dict__,
+            'post': result_posts[i].__dict__,
             'tags': list(tags[i][:high_probable])
         })
     return json.dumps(json_list, ensure_ascii=False)
