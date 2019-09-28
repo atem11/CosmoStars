@@ -1,0 +1,62 @@
+.post-card {
+  margin-top: 15px;
+  opacity: 0.1;
+}
+
+.post-card-active {
+  opacity: 1.0;
+}
+
+.post-header-image {
+  background-size: cover;
+}
+
+.post-content {
+  margin-top: 10px;
+}
+
+.post-text {
+  font-size: 1.0625rem;
+  line-height: 1.625rem;
+  height: 3.250rem;
+  overflow: hidden;
+}
+
+.show {
+  overflow: visible;
+  height: auto;
+}
+
+.post-footer {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+}
+
+.post-footer-item {
+  /*margin: 20px;*/
+  align-self: center;
+}
+
+.post-footer-date {
+  color: #8d8d8f;
+  font-size: 12px;
+}
+
+.post-footer-action {
+
+}
+
+.post-footer-like {
+
+}
+
+.author-id {
+  color: #8d8d8f;
+  text-decoration: none;
+}
+
+.like {
+  margin-top: 5px;
+  height: 25px;
+  width: 25px;
+}

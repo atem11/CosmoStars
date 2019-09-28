@@ -1,0 +1,72 @@
+<div class="content">
+  <mat-expansion-panel expanded="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Найти посты за ...
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="filter-options">
+      <span class="option-name">Время:</span>
+      <mat-form-field>
+
+        <input matInput placeholder="выберите период" [value]="range" [satDatepicker]="picker" class="datepicker"
+               (dateChange)="onDateChangeEvent($event)" disabled/>
+        <mat-hint class="range-buttons">
+          <button class="time-button" mat-button (click)="setOneDay()">За сегодня</button>
+          <button class="time-button" mat-button (click)="setWeek()">За неделю</button>
+          <button class="time-button" mat-button (click)="setMonth()">За месяц</button>
+        </mat-hint>
+        <sat-datepicker #picker [rangeMode]="true" disabled="false"></sat-datepicker>
+        <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
+      </mat-form-field>
+
+      <span class="option-name">Знаменитости:</span>
+      <span class="option-values">
+        <mat-form-field class="celeb-list">
+          <mat-chip-list #chipList aria-label="Celeb selection">
+            <mat-chip *ngFor="let celeb of celebrities"
+                      [selectable]="true"
+                      [removable]="true"
+                      (removed)="remove(celeb)">
+              {{celeb}}
+              <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="Знаменитость..."
+              #celebInput
+              [formControl]="celebCtrl"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="true"
+              (matChipInputTokenEnd)="add($event)">
+          </mat-chip-list>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let celeb of filteredCelebrities | async" [value]="celeb">
+              {{celeb}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+    </span>
+
+      <span class="option-name">События:</span>
+      <span class="option-values">
+
+    </span>
+
+    </div>
+  </mat-expansion-panel>
+
+
+  <div class="feed">
+
+    <ng-container *ngFor="let post of posts; let i = index">
+      <app-post *ngIf="i === 0 && activePost === 0" [post]="undefined" [visible]="true" [active]="false"></app-post>
+      <!--      <app-post *ngIf="i === 0 && activePost <= 1" [post]="undefined" [visible]="true" [active]="false"></app-post>-->
+      <app-post [post]="post" [active]="i === activePost" [visible]="i >= activePost - 1 && i <= activePost + 2"
+                (click)="activePost = i" (voted)="vote($event)">
+      </app-post>
+    </ng-container>
+  </div>
+</div>

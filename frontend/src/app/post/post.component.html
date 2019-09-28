@@ -1,0 +1,44 @@
+<mat-card class="post-card" *ngIf="visible" [class.post-card-active]="active">
+  <mat-card-header>
+    <div mat-card-avatar [ngStyle]="{'background-image': 'url('+ (post ? post.avatar_source : '') + ')'}"
+         class="post-header-image"></div>
+    <mat-card-title class="title">{{post ? post.author : ""}}</mat-card-title>
+    <mat-card-subtitle><a class="author-id"
+                          href="https://vk.com/{{post ? post.author_id : ''}}">@{{post ? post.author_id : ''}}</a>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content class="post-content">
+    <p class="post-text" [class.show]="active">
+      {{post ? post.content : ''}}
+    </p>
+
+  </mat-card-content>
+
+  <mat-card-actions class="post-footer">
+    <span class="post-footer-item post-footer-date"
+          *ngIf="post">{{post.timestamp * 1000 | date : 'd MMM yyyy HH:mm'}}</span>
+    <!--    <mat-button-toggle-group>-->
+    <!--      <mat-button-toggle value="{{true}}"> Нравится </mat-button-toggle>-->
+    <!--      <mat-button-toggle value="{{false}}"> Не равится </mat-button-toggle>-->
+    <!--    </mat-button-toggle-group>-->
+    <button *ngIf="post && post.status !== 'liked'" [disabled]="!active" mat-stroked-button color="primary"
+            class="post-footer-item post-footer-like" (click)="vote($event, true)">Нравится
+    </button>
+    <button *ngIf="post && post.status === 'liked'" [disabled]="!active" mat-flat-button color="primary"
+            class="post-footer-item post-footer-like" (click)="vote($event,$event)">Нравится
+    </button>
+
+    <button *ngIf="post && post.status !== 'disliked'" [disabled]="!active" mat-stroked-button color="warn"
+            class="post-footer-item post-footer-dislike" (click)="vote($event,$event)">Не нравится
+    </button>
+    <button *ngIf="post && post.status === 'disliked'" [disabled]="!active" mat-flat-button color="warn"
+            class="post-footer-item post-footer-dislike" (click)="vote($event,$event)">Не нравится
+    </button>
+
+    <span class="post-footer-item post-footer-meta" *ngIf="post"><img src="assets/like.png" alt="" class="like"/> <span
+      class="post-footer-item">{{post.likes}}</span></span>
+    <span class="post-footer-item post-footer-meta" *ngIf="post"><img src="assets/repost.png" alt=""
+                                                                      class="like"/> {{post.reposts}}</span>
+  </mat-card-actions>
+</mat-card>

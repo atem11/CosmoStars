@@ -1,0 +1,35 @@
+.content {
+  max-width: 600px;
+  margin: auto;
+}
+
+.feed {
+}
+
+.filter-options {
+  display: grid;
+  grid-template-columns: 100px auto;
+  grid-gap: 10px;
+}
+
+.option-name {
+  align-self: center;
+  justify-content: center;
+}
+
+.datepicker {
+  display: inline-block;
+}
+
+.time-button {
+  /*margin: 0 8px;*/
+  padding: 0 4px;
+}
+
+.range-buttons {
+  margin-top: -10px;
+}
+
+.celeb-list {
+  width: 100%;
+}
