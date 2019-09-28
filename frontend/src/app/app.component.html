@@ -28,7 +28,7 @@
             <mat-chip *ngFor="let celeb of celebrities"
                       [selectable]="true"
                       [removable]="true"
-                      (removed)="remove(celeb)">
+                      (removed)="remove(celebrities, celeb)">
               {{celeb}}
               <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
             </mat-chip>
@@ -40,15 +40,44 @@
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="true"
-              (matChipInputTokenEnd)="add($event)">
+              (matChipInputTokenEnd)="add($event, celebrities, celebCtrl)">
           </mat-chip-list>
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedCeleb($event)">
             <mat-option *ngFor="let celeb of filteredCelebrities | async" [value]="celeb">
               {{celeb}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-    </span>
+      </span>
+
+      <span class="option-name">Теги:</span>
+      <span class="option-values">
+        <mat-form-field class="celeb-list">
+          <mat-chip-list #chipTagList aria-label="Tag selection">
+            <mat-chip *ngFor="let tag of tags"
+                      [selectable]="true"
+                      [removable]="true"
+                      (removed)="remove(tags, tag)">
+              {{tag}}
+              <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="Тэг..."
+              #tagInput
+              [formControl]="tagCtrl"
+              [matAutocomplete]="autoTest"
+              [matChipInputFor]="chipTagList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="true"
+              (matChipInputTokenEnd)="add($event, tags, tagCtrl)">
+          </mat-chip-list>
+          <mat-autocomplete #autoTest="matAutocomplete" (optionSelected)="selectedTag($event)">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+              {{tag}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </span>
 
       <span class="option-name">События:</span>
       <span class="option-values">

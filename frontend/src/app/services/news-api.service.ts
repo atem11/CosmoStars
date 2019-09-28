@@ -12,14 +12,19 @@ export class NewsApiService {
   constructor(private http: HttpClient) {
   }
 
-  getPosts(fromTimestamp: number, count: number): Observable<PostModel[]> {
+  getPosts(fromTimestamp: number, toTimestamp: number): Observable<PostModel[]> {
     const response = this.http.get(`${this.ENDPOINT}/posts`, {
       params: {
-        timestamp: fromTimestamp.toString(),
-        count: count.toString()
+        time_start: fromTimestamp.toString(),
+        time_end: toTimestamp.toString(),
       }
     });
-    return response as Observable<[PostModel]>;
+    return response as Observable<PostModel[]>;
+  }
+
+  getTags(): Observable<string[]> {
+    const response = this.http.get(`${this.ENDPOINT}/tags`) as Observable<any[]>;
+    return response as Observable<string[]>
   }
 
   getCelebrities(): Observable<string[]> {
@@ -42,9 +47,10 @@ export interface PostModel {
   author: string;
   status: string;
   avatar_source: string;
-  author_id: string;
+  domain: string;
   content: string;
   timestamp: number;
   likes: number;
   reposts: number;
+  tags: string[];
 }
