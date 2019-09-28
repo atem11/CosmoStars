@@ -102,8 +102,8 @@ def liked_post():
 
 @app.route('/posts', methods=['GET'])
 def posts():
-    timestamp_start = int(request.args.get('time_start', 0) / 1000)
-    timestamp_finish = int(request.args.get('time_end', int(time.time() * 1000)) / 1000)
+    timestamp_start = int(int(request.args.get('time_start', 0)) / 1000)
+    timestamp_finish = int(int(request.args.get('time_end', int(time.time() * 1000))) / 1000)
     query = request.args.get('query', None)
 
     texts = []
