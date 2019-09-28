@@ -3,6 +3,8 @@ import json
 import pickle
 import time
 from datetime import date, datetime
+
+import emoji
 import pandas as pd
 import numpy as np
 
@@ -121,10 +123,13 @@ def posts():
 
     json_list = []
     for i in range(len(result_posts)):
-        probs = all_probs[i]
-        high_probable = sum(i > 0.1 for i in probs)
-        result_posts[i].tags = list(tags[i][:high_probable])
-        json_list.append(result_posts[i].__dict__)
+        normalized = result_posts[i].content
+        normalized = emoji.get_emoji_regexp().sub(r'', normalized)
+        if len(normalized) > 100:
+            probs = all_probs[i]
+            high_probable = sum(i > 0.1 for i in probs)
+            result_posts[i].tags = list(tags[i][:high_probable])
+            json_list.append(result_posts[i].__dict__)
 
     grabbed = stories_grabber.grab(datetime.fromtimestamp(timestamp_start).date(),
                                    datetime.fromtimestamp(timestamp_finish).date())
