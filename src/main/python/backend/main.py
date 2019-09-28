@@ -113,10 +113,8 @@ def posts():
     for i in range(len(result_posts)):
         probs = all_probs[i]
         high_probable = sum(i > 0.1 for i in probs)
-        json_list.append({
-            'post': result_posts[i].__dict__,
-            'tags': list(tags[i][:high_probable])
-        })
+        post[i].tags = list(tags[i][:high_probable])
+        json_list.append(result_posts[i].__dict__)
     return json.dumps(json_list, ensure_ascii=False)
 
 
