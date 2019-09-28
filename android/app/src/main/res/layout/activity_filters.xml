@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="Редактор"
+            android:layout_marginStart="10dp" />
+
+        <Button
+            android:id="@+id/favListView"
+            android:layout_width="133dp"
+            android:layout_height="54dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="Просмотр списка: 0"
+            android:onClick="openFavList"
+            />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Знаменитости:" />
+
+          <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:justifyContent="center">
+
+            <TextView
+                android:id="@+id/celebrity"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:text=""
+                app:layout_flexBasisPercent="50%"
+                />
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+    </LinearLayout>
+
+    <!--
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="Событие:" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Время:" />
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:flexDirection="row"
+            android:flexWrap="wrap"
+            android:justifyContent="center">
+
+            <TextView
+                android:id="@+id/textview1"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:text="Сейчас"
+                android:layout_flexBasisPercent="50%"
+                />
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+    </LinearLayout>
+
+    -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="350dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/addCeleb"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:text="Добавить знаменитость" />
+
+        <Button
+            android:id="@+id/addEvent"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:text="Добавить событие" />
+
+    </LinearLayout>
+
+    <!-- https://www.freakyjolly.com/how-to-add-back-arrow-in-android-activity/ -->
+
+
+</LinearLayout>
