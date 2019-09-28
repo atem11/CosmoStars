@@ -110,7 +110,8 @@ class Storage:
     def dislike(self, post_id: int):
         post = self.post_by_id(post_id)
         post['status'] = "disliked"
-        self.liked_post.remove(post)
+        if post in self.liked_post:
+            self.liked_post.remove(post)
 
     def posts(self, timestamp_start: int, timestamp_end: int):
         res = []
