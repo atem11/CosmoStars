@@ -1,5 +1,5 @@
 .content {
-  max-width: 600px;
+  max-width: 1000px;
   margin: auto;
 }
 
@@ -32,4 +32,32 @@
 
 .celeb-list {
   width: 100%;
+}
+
+.celeb-contacts {
+  display: grid;
+  grid-template-columns: auto 30px;
+  width: 80%;
+}
+
+.celeb-input {
+  width: 80%;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: auto 200px;
+  margin-bottom: 5px;
+}
+
+.header-logo {
+  height: 40px;
+}
+
+.add-new-star {
+  align-self: end;
+}
+
+.panel {
+  margin-top: 5px;
 }

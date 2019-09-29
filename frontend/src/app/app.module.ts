@@ -9,7 +9,7 @@ import {
   MatChipsModule, MatDividerModule,
   MatExpansionModule, MatFormFieldModule,
   MatGridListModule,
-  MatIconModule, MatInputModule
+  MatIconModule, MatInputModule, MatListModule
 } from '@angular/material';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -39,6 +39,7 @@ import { PostComponent } from './post/post.component';
     MatInputModule,
     MatDividerModule,
     MatButtonToggleModule,
+    MatListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

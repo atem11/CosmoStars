@@ -1,5 +1,34 @@
 <div class="content">
-  <mat-expansion-panel expanded="true">
+  <div class="header">
+    <img class="header-logo" src="assets/cosmo.png">
+    <button class="add-new-star" mat-stroked-button>Добавить новую звезду</button>
+  </div>
+  <mat-expansion-panel class="panel" expanded="false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Отслеживаемые звезды
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <!--    <mat-form-field class="celeb-input">-->
+    <!--      <input matInput placeholder="Ссылка на профиль">-->
+    <!--    </mat-form-field>-->
+
+    <br/>
+    <mat-form-field class="celeb-input">
+      <input matInput placeholder="Поиск по контактам" [formControl]="contactCtrl">
+    </mat-form-field>
+    <mat-list>
+      <mat-list-item *ngFor="let celeb of contactCelebrities.sort()">
+        <div class="celeb-contacts">
+          <p>{{celeb}}</p>
+          <mat-icon class="removeCeleb">cancel</mat-icon>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel  class="panel" expanded="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Найти посты за ...
@@ -28,7 +57,7 @@
             <mat-chip *ngFor="let celeb of celebrities"
                       [selectable]="true"
                       [removable]="true"
-                      (removed)="remove(celeb)">
+                      (removed)="remove(celebrities, celeb)">
               {{celeb}}
               <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
             </mat-chip>
@@ -40,21 +69,60 @@
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="true"
-              (matChipInputTokenEnd)="add($event)">
+              (matChipInputTokenEnd)="add($event, celebrities, celebCtrl)">
           </mat-chip-list>
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedCeleb($event)">
             <mat-option *ngFor="let celeb of filteredCelebrities | async" [value]="celeb">
               {{celeb}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-    </span>
+      </span>
 
-      <span class="option-name">События:</span>
+      <span class="option-name">Теги:</span>
       <span class="option-values">
+        <mat-form-field class="celeb-list">
+          <mat-chip-list #chipTagList aria-label="Tag selection">
+            <mat-chip *ngFor="let tag of tags"
+                      [selectable]="true"
+                      [removable]="true"
+                      (removed)="remove(tags, tag)">
+              {{tag}}
+              <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="Тэг..."
+              #tagInput
+              [formControl]="tagCtrl"
+              [matAutocomplete]="autoTest"
+              [matChipInputFor]="chipTagList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="true"
+              (matChipInputTokenEnd)="add($event, tags, tagCtrl)">
+          </mat-chip-list>
+          <mat-autocomplete #autoTest="matAutocomplete" (optionSelected)="selectedTag($event)">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+              {{tag}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </span>
 
-    </span>
-
+      <span class="option-name">Сюжет:</span>
+      <span class="option-values">
+        <mat-form-field class="celeb-list">
+          <input
+            matInput
+            placeholder="Сюжет..."
+            [formControl]="storyCtrl"
+            [matAutocomplete]="autoTestStory">
+          <mat-autocomplete #autoTestStory="matAutocomplete" (optionSelected)="selectedStory($event)">
+            <mat-option *ngFor="let story of stories" [value]="story">
+              {{story}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </span>
     </div>
   </mat-expansion-panel>
 

@@ -55,8 +55,8 @@ if config['DEFAULT']['create_index'] == "True":
 search = whoosh_search.Searcher(config['DEFAULT']['index_root'], create)
 if create:
     search.create(storage.post_list)
-#
-# res = search.search("Полный список Умного голосования на выборах в Мосгордуму 2019")
+
+# res = search.search("театр и кино")
 # for _id in res:
 #     print(json.dumps(storage.post_by_id(_id), ensure_ascii=False))
 
@@ -124,22 +124,29 @@ def posts():
     for p in result_posts:
         texts.append(p.content)
 
-    df = pd.Series(texts)
-    all_probs = sgd.predict_proba(df)
-    tags = sgd.classes_[np.argsort(-all_probs)]
+    tags = []
+    all_probs = []
+    if len(texts) == 0:
+        pass
+    else:
+        df = pd.Series(texts)
+        all_probs = sgd.predict_proba(df)
+        tags = sgd.classes_[np.argsort(-all_probs)]
 
     json_list = []
-    for i in range(len(result_posts)):
-        normalized = result_posts[i].content
-        normalized = emoji.get_emoji_regexp().sub(r'', normalized)
-        if len(normalized) > 100:
-            probs = all_probs[i]
-            high_probable = sum(i > 0.1 for i in probs)
-            result_posts[i].tags = list(tags[i][:high_probable])
-            json_list.append(result_posts[i].__dict__)
+    if len(all_probs) != 0:
+        for i in range(len(result_posts)):
+            normalized = result_posts[i].content
+            normalized = emoji.get_emoji_regexp().sub(r'', normalized)
+            if len(normalized) > 100:
+                probs = all_probs[i]
+                high_probable = sum(i > 0.1 for i in probs)
+                result_posts[i].tags = list(tags[i][:high_probable])
+                json_list.append(result_posts[i].__dict__)
 
     grabbed = stories_grabber.grab(datetime.fromtimestamp(timestamp_start).date(),
                                    datetime.fromtimestamp(timestamp_finish).date())
+    grabbed = list(filter(lambda x: search.test(x.title), grabbed))
     stories_list = list(map(lambda x: {
         'title': x.title,
         'date': time.mktime(x.story_date.timetuple())

@@ -11,36 +11,56 @@
     <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="60dp"
+        android:background="@color/pinkCosmo">
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:text="Редактор"
-            android:layout_marginStart="10dp" />
+            android:textSize="20dp" />
+
 
         <Button
             android:id="@+id/favListView"
-            android:layout_width="133dp"
-            android:layout_height="54dp"
-            android:layout_centerVertical="true"
+            style="@style/Widget.AppCompat.ActionButton"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:text="Просмотр списка: 0"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="28dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="17dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/button_shape"
             android:onClick="openFavList"
-            />
-
+            android:text="Просмотр списка: 0" />
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/favListView"
-            android:layout_marginRight="10dp"
+            style="@style/Widget.AppCompat.ActionButton"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@+id/textView6"
+            android:layout_toRightOf="@+id/textView6"
+            android:background="@drawable/button_shape"
             android:onClick="openFilters"
             android:text="Фильтры" />
 
@@ -50,14 +70,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/celebrityAvatar"
             android:layout_width="104dp"
             android:layout_height="106dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_marginTop="20dp"
+            tools:src="@tools:sample/avatars"
+            app:civ_border_color="@color/pinkCosmo"
+            app:civ_border_width="2dp"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="1"
+            app:civ_shadow_color="@color/cosmoAction"/>
+
 
         <TextView
             android:id="@+id/celebName"
@@ -76,17 +105,20 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:text="Дата: 00:00 01.01.1971"
-            />
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="Дата: 00:00 01.01.1971" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/sourceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -94,23 +126,37 @@
             android:layout_toLeftOf="@id/sourcePic"
             android:text="Источник:" />
 
-        <ImageView
-            android:id="@+id/sourcePic"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginRight="20dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            tools:srcCompat="@tools:sample/avatars" />
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/sourcePic"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                tools:src="@tools:sample/avatars"
+                app:civ_border_color="@color/cosmoAction"
+                app:civ_border_width="2dp"
+                app:civ_shadow="true"
+                app:civ_shadow_radius="1"
+                app:civ_shadow_color="@color/pinkCosmo"/>
+
+<!--            <ImageView-->
+<!--                android:id="@+id/sourcePic"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                tools:srcCompat="@tools:sample/avatars" />-->
 
     </RelativeLayout>
 
     <TextView
         android:id="@+id/mainText"
-        android:layout_width="360dp"
+        android:layout_width="370dp"
         android:layout_height="350dp"
-        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
         android:text="Текст Текст Текст" />
 
     <LinearLayout
@@ -125,12 +171,13 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>
 
-        <Button
+        <Button style="@style/Widget.AppCompat.ActionButton"
             android:id="@+id/dislike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="dislikePost"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_shape_round_no"
+            android:text="👎"
             />
 
         <Space
@@ -138,12 +185,13 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>
 
-        <Button
+        <Button style="@style/Widget.AppCompat.ActionButton"
             android:id="@+id/like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="likePost"
-            android:background="@color/colorAccent"
+            android:background="@drawable/button_shape_round_yes"
+            android:text="👍"
             />
 
         <Space

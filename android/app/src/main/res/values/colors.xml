@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#D0110E</color>
+    <color name="colorPrimary">#FF4F4D</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#10C428</color>
+    <color name="colorAccent">#28E03D</color>
+    <color name="pinkCosmo">#E73EBB</color>
+    <color name="cosmoAction">#F5ABDE</color>
 </resources>

@@ -14,73 +14,96 @@ import {map, startWith} from "rxjs/operators";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  celebCtrl = new FormControl();
   title = 'frontend';
-  allPosts: PostModel[];
+  allPosts: PostModel[] = [];
   posts: PostModel[];
+  stories: string[];
 
+  celebCtrl = new FormControl();
   filteredCelebrities: Observable<string[]>;
   celebrities: string[] = [];
   allCelebrities: string[];
+
+  tagCtrl = new FormControl();
+  filteredTags: Observable<string[]>;
+  tags: string[] = [];
+  allTags: string[];
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
   activePost = 0;
   range: SatDatepickerRangeValue<Date>;
 
   @ViewChild('celebInput', {static: false}) celebInput: ElementRef<HTMLInputElement>;
+  @ViewChild('tagInput', {static: false}) tagInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+  storyCtrl = new FormControl();
+  story: string = "";
+  contactCtrl = new FormControl();
+  contactCelebrities: string[];
 
 
   constructor(private newsApi: NewsApiService) {
-    console.log(123);
-    const timestamp = new Date().getTime();
-    this.newsApi.getPosts(timestamp, 5).subscribe(posts => {
-      this.allPosts = posts;
-      this.posts = Array.from(this.allPosts);
-      this.setOneDay();
-    });
-    this.newsApi.getCelebrities().subscribe(celebrities => {
-      this.allCelebrities = celebrities;
+    this.newsApi.getCelebrities().subscribe(celebs => {
+      this.allCelebrities = celebs;
+      this.contactCelebrities = this.allCelebrities.slice().sort();
+
+      this.contactCtrl.valueChanges.subscribe(value => {
+        this.contactCelebrities = this.allCelebrities.filter(c => c.toLowerCase().includes(value.toLowerCase()))
+      });
+
       this.filteredCelebrities = this.celebCtrl.valueChanges.pipe(
         startWith(null),
-        map(celeb => celeb ? this._filter(celeb) : this.allCelebrities.slice()))
+        map(celeb => celeb ? this._filter(this.allCelebrities, celeb) : this.allCelebrities.slice()));
     });
 
+    this.newsApi.getTags().subscribe(tags => {
+      this.allTags = tags;
+      this.filteredTags = this.tagCtrl.valueChanges.pipe(
+        startWith(null),
+        map(tag => tag ? this._filter(this.allTags, tag) : this.allTags.slice()))
+    });
+
+    this.setWeek();
   }
 
-  remove(celeb: string) {
-    const index = this.celebrities.indexOf(celeb);
+  remove(items: string[], item: string) {
+    const index = items.indexOf(item);
 
     if (index >= 0) {
-      this.celebrities.splice(index, 1);
+      items.splice(index, 1);
     }
 
     this.filter();
   }
 
-  add(event: MatChipInputEvent) {
+  add(event: MatChipInputEvent, items: string[], ctrl: FormControl) {
     if (!this.matAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
 
-      // Add our celeb
       if ((value || '').trim()) {
-        this.celebrities.push(value.trim());
+        items.push(value.trim());
       }
 
-      // Reset the input value
       if (input) {
         input.value = '';
       }
 
-      this.celebCtrl.setValue(null);
+      ctrl.setValue(null);
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent) {
+  selectedCeleb(event: MatAutocompleteSelectedEvent) {
     this.celebrities.push(event.option.viewValue);
     this.celebInput.nativeElement.value = '';
     this.celebCtrl.setValue(null);
+    this.filter();
+  }
+
+  selectedTag(event: MatAutocompleteSelectedEvent) {
+    this.tags.push(event.option.viewValue);
+    this.tagInput.nativeElement.value = '';
+    this.tagCtrl.setValue(null);
     this.filter();
   }
 
@@ -95,7 +118,7 @@ export class AppComponent {
       end: new Date()
     } as SatDatepickerRangeValue<Date>;
 
-    this.filter();
+    this.updatePosts();
   }
 
   setWeek() {
@@ -110,7 +133,7 @@ export class AppComponent {
       end: new Date()
     } as SatDatepickerRangeValue<Date>;
 
-    this.filter();
+    this.updatePosts();
   }
 
   setMonth() {
@@ -125,26 +148,32 @@ export class AppComponent {
       end: new Date()
     } as SatDatepickerRangeValue<Date>;
 
-    this.filter();
+    this.updatePosts();
   }
 
   onDateChangeEvent(event: SatDatepickerInputEvent<Date>) {
     this.range = event.value as SatDatepickerRangeValue<Date>;
+    this.updatePosts();
   }
 
   filter() {
     // console.log(this.range.begin.getTime() + ' ' + this.range.end.getTime());
     // console.log(this.allPosts[0].timestamp);
 
+
+    let tagSet = new Set(this.tags);
+    // console.log(this.allPosts[0].timestamp, this.range.begin.getTime());
     this.posts = this.allPosts
       .filter(post => post.status === 'unknown')
       .filter(post => this.celebrities.length === 0 || this.celebrities.includes(post.author))
       .filter(post => this.range === undefined
-        || (post.timestamp * 1000  >= this.range.begin.getTime() && post.timestamp * 1000 <= this.range.end.getTime()))
+        || (post.timestamp * 1000 >= this.range.begin.getTime() && post.timestamp * 1000 <= this.range.end.getTime()))
+      .filter(post => this.tags.length === 0 || post.tags.filter(t => tagSet.has(t)).length > 0)
       .sort((post1, post2) =>
         post1.timestamp === post2.timestamp ? 0 : post1.timestamp > post2.timestamp ? -1 : 1);
     this.activePost = 0;
   }
+
 
   vote(isLike: boolean) {
     const post = this.posts[this.activePost];
@@ -158,9 +187,30 @@ export class AppComponent {
     this.activePost = this.activePost + 1;
   }
 
-  _filter(celeb: string) {
-    return this.allCelebrities.filter(
-      c => c.toLowerCase().indexOf(celeb.toLowerCase()) !== -1
+  _filter(items
+            :
+            string[], item
+            :
+            string
+  ) {
+    return items.filter(
+      c => c.toLowerCase().indexOf(item.toLowerCase()) !== -1
     );
+  }
+
+  selectedStory(event: MatAutocompleteSelectedEvent) {
+    this.story = event.option.viewValue;
+    console.log(this.story);
+    this.updatePosts();
+  }
+
+  updatePosts() {
+    let story = this.story && this.stories && this.stories.includes(this.story) ? this.story : undefined;
+    this.newsApi.getPosts(this.range.begin.getTime(), this.range.end.getTime(), story).subscribe(posts => {
+      this.allPosts = posts["posts"];
+      this.stories = posts["stories"].map(s => s["title"]);
+      this.filter();
+    });
+
   }
 }
