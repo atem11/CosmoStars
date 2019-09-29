@@ -44,9 +44,14 @@
   width: 80%;
 }
 
+.change-view {
+  /*align-self: start;*/
+  margin-right: auto;
+}
+
 .header {
   display: grid;
-  grid-template-columns: auto 200px;
+  grid-template-columns: auto auto 200px;
   margin-bottom: 5px;
 }
 
@@ -56,6 +61,7 @@
 
 .add-new-star {
   align-self: end;
+  margin-bottom: 1px;
 }
 
 .panel {

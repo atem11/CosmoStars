@@ -83,13 +83,15 @@ def post():
 @app.route('/post_like', methods=['POST'])
 def like():
     post_id = request.form['post_id']
-    return storage.like(post_id)
+    storage.like(post_id)
+    return ""
 
 
 @app.route('/post_dislike', methods=['POST'])
 def dis():
     post_id = request.form['post_id']
-    return storage.dislike(post_id)
+    storage.dislike(post_id)
+    return ""
 
 
 @app.route('/liked_posts')
@@ -97,6 +99,9 @@ def liked_post():
     ans = []
     for p in storage.liked_post:
         ans.append(storage.construct(p))
+    # print(ans)
+    ans.sort(key=lambda x: x.timestamp)
+    ans = [x.__dict__ for x in ans]
     return json.dumps(ans, ensure_ascii=False)
 
 

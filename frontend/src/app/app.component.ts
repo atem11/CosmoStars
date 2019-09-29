@@ -15,6 +15,9 @@ import {map, startWith} from "rxjs/operators";
 })
 export class AppComponent {
   title = 'frontend';
+
+  viewLiked = false;
+
   allPosts: PostModel[] = [];
   posts: PostModel[];
   stories: string[];
@@ -40,6 +43,7 @@ export class AppComponent {
   story: string = "";
   contactCtrl = new FormControl();
   contactCelebrities: string[];
+  likedPosts: PostModel[] = [];
 
 
   constructor(private newsApi: NewsApiService) {
@@ -61,6 +65,10 @@ export class AppComponent {
       this.filteredTags = this.tagCtrl.valueChanges.pipe(
         startWith(null),
         map(tag => tag ? this._filter(this.allTags, tag) : this.allTags.slice()))
+    });
+
+    this.newsApi.likedPosts().subscribe(posts => {
+      this.likedPosts = posts;
     });
 
     this.setWeek();
@@ -164,25 +172,29 @@ export class AppComponent {
     let tagSet = new Set(this.tags);
     // console.log(this.allPosts[0].timestamp, this.range.begin.getTime());
     this.posts = this.allPosts
-      .filter(post => post.status === 'unknown')
+      // .filter(post => post.status === 'unknown')
       .filter(post => this.celebrities.length === 0 || this.celebrities.includes(post.author))
       .filter(post => this.range === undefined
         || (post.timestamp * 1000 >= this.range.begin.getTime() && post.timestamp * 1000 <= this.range.end.getTime()))
       .filter(post => this.tags.length === 0 || post.tags.filter(t => tagSet.has(t)).length > 0)
       .sort((post1, post2) =>
         post1.timestamp === post2.timestamp ? 0 : post1.timestamp > post2.timestamp ? -1 : 1);
-    this.activePost = 0;
+    this.activePost = this.posts.findIndex((post => post.status === 'unknown'));
   }
 
 
   vote(isLike: boolean) {
     const post = this.posts[this.activePost];
     if (isLike) {
-      this.newsApi.like(post)
+      this.newsApi.like(post).subscribe(x => console.log(123))
     } else {
       this.newsApi.dislike(post)
     }
     post.status = isLike ? 'liked' : 'disliked';
+
+    this.newsApi.likedPosts().subscribe(posts => {
+      this.likedPosts = posts;
+    });
 
     this.activePost = this.activePost + 1;
   }

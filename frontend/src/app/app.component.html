@@ -1,8 +1,11 @@
 <div class="content">
   <div class="header">
     <img class="header-logo" src="assets/cosmo.png">
-    <button class="add-new-star" mat-stroked-button>Добавить новую звезду</button>
+    <button class="change-view" mat-stroked-button (click)="viewLiked = !viewLiked">Перейти к {{!viewLiked ? "выбранным постам" : "новым постам"}}</button>
+    <button *ngIf="!viewLiked" class="add-new-star" mat-stroked-button>Добавить новую звезду</button>
   </div>
+
+  <ng-container *ngIf="!viewLiked">
   <mat-expansion-panel class="panel" expanded="false">
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -137,4 +140,13 @@
       </app-post>
     </ng-container>
   </div>
+  </ng-container>
+  <ng-container *ngIf="viewLiked">
+    <mat-card *ngFor="let post of likedPosts">
+      <mat-card-content>
+        {{post.author}}
+      </mat-card-content>
+
+    </mat-card>
+  </ng-container>
 </div>

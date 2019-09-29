@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from "rxjs/operators";
 
@@ -38,11 +38,15 @@ export class NewsApiService {
   }
 
   like(post: PostModel): Observable<any> {
-    return this.http.post(`${this.ENDPOINT}/post_like`, {post_id: post.post_id})
+    return this.http.post(`${this.ENDPOINT}/post_like`, new HttpParams().set('post_id', post.post_id))
   }
 
   dislike(post: PostModel): Observable<any> {
-    return this.http.post(`${this.ENDPOINT}/post_dislike`, {post_id: post.post_id})
+    return this.http.post(`${this.ENDPOINT}/post_dislike`, new HttpParams().set('post_id', post.post_id))
+  }
+
+  likedPosts(): Observable<PostModel[]> {
+    return this.http.get(`${this.ENDPOINT}/liked_posts`) as Observable<PostModel[]>
   }
 }
 
