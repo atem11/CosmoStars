@@ -46,16 +46,20 @@ class Searcher:
         return query
 
     def test(self, query):
-        rank = 5
+        rank = 8
         q = self.parser.parse(query)
         q = self.to_bigrams(q)
         res = self.ix.searcher().search(q, limit=500000000)
         valid = True
         if len(res) == 0:
             valid = False
+        cnt = 0
         for item in res:
+            cnt += 1
             if item.score < rank:
                 valid = False
+            if cnt == 3:
+                break
         return valid
 
     def search(self, query):
