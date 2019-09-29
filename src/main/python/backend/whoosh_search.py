@@ -36,6 +36,8 @@ class Searcher:
         q = self.parser.parse(query)
         res = self.ix.searcher().search(q, limit=5)
         valid = True
+        if len(res) == 0:
+            valid = False
         for item in res:
             if item.score < rank:
                 valid = False
