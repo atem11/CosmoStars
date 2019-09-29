@@ -32,9 +32,67 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/timeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Время:" />
+
+        <TextView
+            android:id="@+id/timePeriod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/timeLabel"
+            android:layout_marginLeft="20dp"
+            android:text="   "
+            android:layout_toEndOf="@+id/timeLabel"
+            android:layout_marginStart="20dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/cardview_dark_background"
+                android:textColor="@color/cardview_light_background"
+                android:layout_marginRight="10dp"
+                android:text="за день" />
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/cardview_dark_background"
+                android:textColor="@color/cardview_light_background"
+                android:layout_marginRight="10dp"
+                android:text="за неделю" />
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:background="@color/cardview_dark_background"
+                android:textColor="@color/cardview_light_background"
+                android:text="за месяц" />
+
+        </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
@@ -65,16 +123,8 @@
 
     </LinearLayout>
 
-    <!--
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="Событие:" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
@@ -84,34 +134,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:text="Время:" />
+            android:text="Событие:" />
 
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:flexDirection="row"
-            android:flexWrap="wrap"
-            android:justifyContent="center">
-
-            <TextView
-                android:id="@+id/textview1"
-                android:layout_width="120dp"
-                android:layout_height="80dp"
-                android:text="Сейчас"
-                android:layout_flexBasisPercent="50%"
-                />
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:justifyContent="center">
 
         </com.google.android.flexbox.FlexboxLayout>
 
     </LinearLayout>
 
-    -->
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="200dp"
         android:orientation="vertical">
 
         <Button

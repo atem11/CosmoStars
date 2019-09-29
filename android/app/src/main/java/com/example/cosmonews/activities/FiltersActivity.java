@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 public class FiltersActivity extends AppCompatActivity {
-    private enum TimeBorder {
-        oneDay, threeDays, week, month
+    private enum TimeBorder { // TODO: Calendar
+        oneDay, week, month
     }
     private TimeBorder currentTime;
 
@@ -34,7 +34,6 @@ public class FiltersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_filters);
 
         currentTime = TimeBorder.oneDay;
-
 
         Button addCeleb = findViewById(R.id.addCeleb);
         final Context thisActivity = this;
