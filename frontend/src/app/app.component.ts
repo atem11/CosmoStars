@@ -38,11 +38,19 @@ export class AppComponent {
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
   storyCtrl = new FormControl();
   story: string = "";
+  contactCtrl = new FormControl();
+  contactCelebrities: string[];
 
 
   constructor(private newsApi: NewsApiService) {
     this.newsApi.getCelebrities().subscribe(celebs => {
       this.allCelebrities = celebs;
+      this.contactCelebrities = this.allCelebrities.slice().sort();
+
+      this.contactCtrl.valueChanges.subscribe(value => {
+        this.contactCelebrities = this.allCelebrities.filter(c => c.toLowerCase().includes(value.toLowerCase()))
+      });
+
       this.filteredCelebrities = this.celebCtrl.valueChanges.pipe(
         startWith(null),
         map(celeb => celeb ? this._filter(this.allCelebrities, celeb) : this.allCelebrities.slice()));

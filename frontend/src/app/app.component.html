@@ -1,4 +1,8 @@
 <div class="content">
+  <div class="header">
+    <img class="header-logo" src="assets/cosmo.png">
+    <button class="add-new-star" mat-stroked-button>Добавить новую звезду</button>
+  </div>
   <mat-expansion-panel expanded="false">
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -6,11 +10,22 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Ссылка на профиль">
+    <!--    <mat-form-field class="celeb-input">-->
+    <!--      <input matInput placeholder="Ссылка на профиль">-->
+    <!--    </mat-form-field>-->
+
+    <br/>
+    <mat-form-field class="celeb-input">
+      <input matInput placeholder="Поиск по контактам" [formControl]="contactCtrl">
     </mat-form-field>
-    <button mat-button>Добавить</button>
-    <button mat-button>Удалить</button>
+    <mat-list>
+      <mat-list-item *ngFor="let celeb of contactCelebrities.sort()">
+        <div class="celeb-contacts">
+          <p>{{celeb}}</p>
+          <mat-icon class="removeCeleb">cancel</mat-icon>
+        </div>
+      </mat-list-item>
+    </mat-list>
   </mat-expansion-panel>
 
   <mat-expansion-panel expanded="true">
