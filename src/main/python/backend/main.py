@@ -74,6 +74,12 @@ def refresh():
     search.update(upd)
 
 
+@app.route('/add_celeb')
+def add_celeb():
+    domain = request.form['domain']
+    storage.add_celeb(domain)
+
+
 @app.route('/post', methods=['GET'])
 def post():
     post_id = request.form['post_id']

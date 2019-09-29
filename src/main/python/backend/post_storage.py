@@ -9,13 +9,14 @@ from grubber import vk_grubber
 
 class Storage:
     def __init__(self):
+        self.time_window = 5500000
         config = configparser.ConfigParser()
         config.read('src/main/resources/config.ini')
         self.vk_token = config['DEFAULT']['vk_token']
         self.celeb_list = config['DEFAULT']['celeb_list']
         self.storage_path = config['DEFAULT']['storage']
         self.storage_celeb = config['DEFAULT']['celebs']
-        self.last_timestamp = int(time.time()) - 5500000
+        self.last_timestamp = int(time.time()) - self.time_window
         self.vk_grubber = vk_grubber.Grubber(self.vk_token)
 
         self.celeb_ids = set()
@@ -74,11 +75,29 @@ class Storage:
             upd.extend(self.vk_grubber.posts(int(_id), self.last_timestamp, 0))
         upd = sorted(upd, key=lambda post: post['date'])
         self.post_list.extend(upd)
+        self.last_timestamp = self.post_list[-1]['date']
         self.save_data()
         return upd
 
     def celeb_lst(self):
         return self.celeb_names
+
+    def add_celeb(self, domain):
+        user = self.vk_grubber.user_info(domain)
+        if user['id'] in self.celeb_ids:
+            return
+        else:
+            usr = {'id': user['id'],
+                   'domain': user['domain'],
+                   'name': user['first_name'] + " " + user['last_name']
+                   }
+            self.celeb_ids.add(usr['id'])
+            self.celeb_names.append(usr)
+            self.save_celeb()
+            upd = self.vk_grubber.posts(usr['id'], self.last_timestamp - self.time_window, 0)
+            self.post_list.extend(upd)
+            self.post_list = sorted(self.post_list, key=lambda post: post['date'])
+            self.save_data()
 
     def post_by_id(self, post_id: int):
         for post in self.post_list:

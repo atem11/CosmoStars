@@ -8,7 +8,7 @@ class Grubber:
         self.session = vk.VkApi(token=self.token, api_version="5.101")
         self.api = self.session.get_api()
 
-    def user_info(self, vk_id: int):
+    def user_info(self, vk_id):
         user = self.api.users.get(user_ids=[vk_id], fields='domain', lang=0)[0]
         return user
 
