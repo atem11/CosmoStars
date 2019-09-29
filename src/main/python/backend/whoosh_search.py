@@ -4,6 +4,7 @@ from whoosh import qparser
 from whoosh.index import create_in, open_dir
 from whoosh.fields import Schema, TEXT, ID
 from whoosh.qparser import QueryParser
+from whoosh.query import And, Or
 
 
 class Searcher:
@@ -31,9 +32,19 @@ class Searcher:
                                     content=text)
         writer.commit()
 
+    def to_bigrams(self, q):
+        ans = []
+        for t in q:
+            ans.append(t)
+        query = ans[0]
+        for i in range(1, len(ans)):
+            query = Or([query, And([ans[i - 1], ans[i]])])
+        return query
+
     def test(self, query):
         rank = 12
         q = self.parser.parse(query)
+        q = self.to_bigrams(q)
         res = self.ix.searcher().search(q, limit=5)
         valid = True
         if len(res) == 0:
@@ -45,6 +56,7 @@ class Searcher:
 
     def search(self, query):
         q = self.parser.parse(query)
+        q = self.to_bigrams(q)
         res = self.ix.searcher().search(q, limit=5)
         ans = []
         for item in res:
