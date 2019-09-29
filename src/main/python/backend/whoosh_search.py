@@ -1,6 +1,7 @@
 import os
 import emoji
 from whoosh import qparser
+from whoosh.analysis import StemmingAnalyzer
 from whoosh.index import create_in, open_dir
 from whoosh.fields import Schema, TEXT, ID
 from whoosh.qparser import QueryParser
@@ -10,9 +11,10 @@ from whoosh.query import And, Or
 class Searcher:
     def __init__(self, root, create=False):
         self.root = root
+        self.stemmer = StemmingAnalyzer()
         if not os.path.exists(root):
             os.makedirs(root, exist_ok=True)
-        self.schema = Schema(id=ID(stored=True), content=TEXT)
+        self.schema = Schema(id=ID(stored=True), content=TEXT(analyzer=self.stemmer))
         if not create:
             self.ix = open_dir(root)
             self.parser = QueryParser("content", self.ix.schema, group=qparser.OrGroup)
@@ -58,7 +60,7 @@ class Searcher:
 
     def search(self, query):
         q = self.parser.parse(query)
-        q = self.to_bigrams(q)
+        # q = self.to_bigrams(q)
         res = self.ix.searcher().search(q, limit=5)
         ans = []
         for item in res:
