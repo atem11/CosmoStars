@@ -49,7 +49,7 @@ class Searcher:
         rank = 8
         q = self.parser.parse(query)
         q = self.to_bigrams(q)
-        res = self.ix.searcher().search(q, limit=500000000)
+        res = self.ix.searcher().search(q, limit=50)
         valid = True
         if len(res) == 0:
             valid = False
@@ -65,7 +65,7 @@ class Searcher:
     def search(self, query):
         q = self.parser.parse(query)
         q = self.to_bigrams(q)
-        res = self.ix.searcher().search(q, limit=500000000)
+        res = self.ix.searcher().search(q, limit=50)
         ans = []
         for item in res:
             ans.append(item['id'])
