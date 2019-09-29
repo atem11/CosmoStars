@@ -56,7 +56,7 @@ search = whoosh_search.Searcher(config['DEFAULT']['index_root'], create)
 if create:
     search.create(storage.post_list)
 
-# res = search.search("Полный список Умного голосования на выборах в Мосгордуму 2019")
+# res = search.search("театр и кино")
 # for _id in res:
 #     print(json.dumps(storage.post_by_id(_id), ensure_ascii=False))
 

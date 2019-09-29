@@ -37,12 +37,14 @@ class Searcher:
         for t in q:
             ans.append(t)
         query = ans[0]
-        for i in range(1, len(ans)):
-            query = Or([query, And([ans[i - 1], ans[i]])])
+        if len(ans) > 1:
+            for i in range(1, len(ans)):
+                query = Or([query, And([ans[i - 1], ans[i]])])
+            query = Or([query, ans[-1]])
         return query
 
     def test(self, query):
-        rank = 12
+        rank = 5
         q = self.parser.parse(query)
         q = self.to_bigrams(q)
         res = self.ix.searcher().search(q, limit=5)
