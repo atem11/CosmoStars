@@ -32,7 +32,7 @@ class Searcher:
         writer.commit()
 
     def test(self, query):
-        rank = 10
+        rank = 12
         q = self.parser.parse(query)
         res = self.ix.searcher().search(q, limit=5)
         valid = True

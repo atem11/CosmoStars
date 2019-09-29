@@ -140,9 +140,7 @@ def posts():
 
     grabbed = stories_grabber.grab(datetime.fromtimestamp(timestamp_start).date(),
                                    datetime.fromtimestamp(timestamp_finish).date())
-    grabbed = list(filter(lambda x: {
-        search.test(x.title)
-    }, grabbed))
+    grabbed = list(filter(lambda x: search.test(x.title), grabbed))
     stories_list = list(map(lambda x: {
         'title': x.title,
         'date': time.mktime(x.story_date.timetuple())

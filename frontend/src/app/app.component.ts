@@ -17,6 +17,7 @@ export class AppComponent {
   title = 'frontend';
   allPosts: PostModel[] = [];
   posts: PostModel[];
+  stories: string[];
 
   celebCtrl = new FormControl();
   filteredCelebrities: Observable<string[]>;
@@ -35,6 +36,8 @@ export class AppComponent {
   @ViewChild('celebInput', {static: false}) celebInput: ElementRef<HTMLInputElement>;
   @ViewChild('tagInput', {static: false}) tagInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
+  storyCtrl = new FormControl();
+  story: string = "";
 
 
   constructor(private newsApi: NewsApiService) {
@@ -107,10 +110,7 @@ export class AppComponent {
       end: new Date()
     } as SatDatepickerRangeValue<Date>;
 
-    this.newsApi.getPosts(this.range.begin.getTime(), this.range.end.getTime()).subscribe(posts => {
-      this.allPosts = posts["posts"];
-      this.filter();
-    });
+    this.updatePosts();
   }
 
   setWeek() {
@@ -125,10 +125,7 @@ export class AppComponent {
       end: new Date()
     } as SatDatepickerRangeValue<Date>;
 
-    this.newsApi.getPosts(this.range.begin.getTime(), this.range.end.getTime()).subscribe(posts => {
-      this.allPosts = posts["posts"];
-      this.filter();
-    });
+    this.updatePosts();
   }
 
   setMonth() {
@@ -143,10 +140,7 @@ export class AppComponent {
       end: new Date()
     } as SatDatepickerRangeValue<Date>;
 
-    this.newsApi.getPosts(this.range.begin.getTime(), this.range.end.getTime()).subscribe(posts => {
-      this.allPosts = posts["posts"];
-      this.filter();
-    });
+    this.updatePosts();
   }
 
   onDateChangeEvent(event: SatDatepickerInputEvent<Date>) {
@@ -193,5 +187,21 @@ export class AppComponent {
     return items.filter(
       c => c.toLowerCase().indexOf(item.toLowerCase()) !== -1
     );
+  }
+
+  selectedStory(event: MatAutocompleteSelectedEvent) {
+    this.story = event.option.viewValue;
+    console.log(this.story);
+    this.updatePosts();
+  }
+
+  updatePosts() {
+    let story = this.story && this.stories && this.stories.includes(this.story) ? this.story : undefined;
+    this.newsApi.getPosts(this.range.begin.getTime(), this.range.end.getTime(), story).subscribe(posts => {
+      this.allPosts = posts["posts"];
+      this.stories = posts["stories"].map(s => s["title"]);
+      this.filter();
+    });
+
   }
 }

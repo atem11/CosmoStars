@@ -1,4 +1,18 @@
 <div class="content">
+  <mat-expansion-panel expanded="false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Отслеживаемые звезды
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Ссылка на профиль">
+    </mat-form-field>
+    <button mat-button>Добавить</button>
+    <button mat-button>Удалить</button>
+  </mat-expansion-panel>
+
   <mat-expansion-panel expanded="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -79,11 +93,21 @@
         </mat-form-field>
       </span>
 
-      <span class="option-name">События:</span>
+      <span class="option-name">Сюжет:</span>
       <span class="option-values">
-
-    </span>
-
+        <mat-form-field class="celeb-list">
+          <input
+            matInput
+            placeholder="Сюжет..."
+            [formControl]="storyCtrl"
+            [matAutocomplete]="autoTestStory">
+          <mat-autocomplete #autoTestStory="matAutocomplete" (optionSelected)="selectedStory($event)">
+            <mat-option *ngFor="let story of stories" [value]="story">
+              {{story}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </span>
     </div>
   </mat-expansion-panel>
 

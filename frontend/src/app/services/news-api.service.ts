@@ -12,12 +12,17 @@ export class NewsApiService {
   constructor(private http: HttpClient) {
   }
 
-  getPosts(fromTimestamp: number, toTimestamp: number): Observable<PostModel[]> {
+  getPosts(fromTimestamp: number, toTimestamp: number, query: string | undefined): Observable<PostModel[]> {
+    const params = query ? {
+      time_start: fromTimestamp.toString(),
+      time_end: toTimestamp.toString(),
+      query: query
+    } : {
+      time_start: fromTimestamp.toString(),
+      time_end: toTimestamp.toString(),
+    };
     const response = this.http.get(`${this.ENDPOINT}/posts`, {
-      params: {
-        time_start: fromTimestamp.toString(),
-        time_end: toTimestamp.toString(),
-      }
+      params: params
     });
     return response as Observable<PostModel[]>;
   }

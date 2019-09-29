@@ -26,14 +26,14 @@
             class="post-footer-item post-footer-like" (click)="vote($event, true)">Нравится
     </button>
     <button *ngIf="post && post.status === 'liked'" [disabled]="!active" mat-flat-button color="primary"
-            class="post-footer-item post-footer-like" (click)="vote($event,$event)">Нравится
+            class="post-footer-item post-footer-like" (click)="vote($event, true)">Нравится
     </button>
 
     <button *ngIf="post && post.status !== 'disliked'" [disabled]="!active" mat-stroked-button color="warn"
-            class="post-footer-item post-footer-dislike" (click)="vote($event,$event)">Не нравится
+            class="post-footer-item post-footer-dislike" (click)="vote($event, false)">Не нравится
     </button>
     <button *ngIf="post && post.status === 'disliked'" [disabled]="!active" mat-flat-button color="warn"
-            class="post-footer-item post-footer-dislike" (click)="vote($event,$event)">Не нравится
+            class="post-footer-item post-footer-dislike" (click)="vote($event, false)">Не нравится
     </button>
 
     <span class="post-footer-item post-footer-meta" *ngIf="post"><img src="assets/like.png" alt="" class="like"/> <span
