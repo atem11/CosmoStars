@@ -1,14 +1,10 @@
 .post-card {
   margin-top: 15px;
-  opacity: 0.1;
+  opacity: 0.25;
 }
 
 .post-card-active {
   opacity: 1.0;
-}
-
-.post-header-image {
-  background-size: cover;
 }
 
 .post-content {
@@ -21,6 +17,7 @@
   height: 3.250rem;
   margin-top: 5px;
   overflow: hidden;
+  white-space: pre-wrap;
 }
 
 .show {
@@ -30,7 +27,7 @@
 
 .post-footer {
   display: grid;
-  grid-template-columns: auto auto auto auto auto;
+  grid-template-columns: auto auto auto auto;
 }
 
 .post-footer-item {
@@ -41,6 +38,7 @@
 .post-footer-date {
   color: #8d8d8f;
   font-size: 12px;
+  margin-left: 10px;
 }
 
 .tags {
@@ -67,4 +65,76 @@
   margin-top: 5px;
   height: 25px;
   width: 25px;
+}
+
+.like-item {
+  margin-right: 15px;
+  align-self: center;
+  /*height: 25px;*/
+  /*width: 25px;*/
+}
+
+.like-repost {
+  justify-self: end;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.like-text {
+  vertical-align: 5px;
+  margin-left: 3px;
+}
+
+.vk-logo {
+  position: absolute;
+  height: 90px;
+  right: 0px;
+  top: -5px;
+}
+
+.title {
+  width: 700px;
+}
+
+.avatar {
+  height: 60px;
+  width: 60px;
+  margin-bottom: 10px;
+  background-size: cover;
+
+}
+
+.liked {
+  color: #0A9928;
+  border: 0.5rem solid #0A9928;
+  -webkit-mask-position: 13rem 6rem;
+  transform: rotate(-14deg);
+  border-radius: 0;
+}
+
+.disliked {
+  color: #D23;
+  border: 0.5rem double #D23;
+  transform: rotate(3deg);
+  -webkit-mask-position: 2rem 3rem;
+  font-size: 2rem;
+}
+
+.stamp {
+  position: absolute;
+  right: 25px;
+  transform: rotate(12deg);
+  /*color: #555;*/
+  font-size: 3rem;
+  font-weight: 700;
+  /*border: 0.25rem solid #555;*/
+  display: inline-block;
+  padding: 0.25rem 1rem;
+  text-transform: uppercase;
+  border-radius: 1rem;
+  font-family: 'Courier';
+  -webkit-mask-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/8399/grunge.png');
+  -webkit-mask-size: 944px 604px;
+  mix-blend-mode: multiply;
+  opacity: 1;
 }

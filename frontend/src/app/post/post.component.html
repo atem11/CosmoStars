@@ -1,15 +1,25 @@
 <mat-card class="post-card" *ngIf="visible" [class.post-card-active]="active">
   <mat-card-header>
-    <div mat-card-avatar [ngStyle]="{'background-image': 'url('+ (post ? post.avatar_source : '') + ')'}"
-         class="post-header-image"></div>
-    <mat-card-title class="title">{{post ? post.author : ""}}</mat-card-title>
-    <mat-card-subtitle><a class="author-id"
-                          href="https://vk.com/{{post ? post.domain : ''}}">@{{post ? post.domain : ''}}</a>
+    <div mat-card-avatar class="avatar"
+         [ngStyle]="{'background-image': 'url('+ (post ? post.avatar_source : '') + ')'}"></div>
+    <mat-card-title class="title">
+      {{post ? post.author : ""}}
+      <img *ngIf="active" class="vk-logo" src="assets/VK_Blue_Logo.svg">
+    </mat-card-title>
+
+    <mat-card-subtitle>
+      <a class="author-id" href="https://vk.com/{{post ? post.domain : ''}}">@{{post ? post.domain : ''}}</a>
     </mat-card-subtitle>
   </mat-card-header>
   <mat-divider></mat-divider>
+  <span *ngIf="post && post.status !== 'unknown'" class="stamp" [class.liked]="post.status === 'liked'"
+        [class.disliked]="post.status === 'disliked'">
+      {{post.status === 'liked' ? 'В работу' : 'Неинтересно'}}
+    </span>
   <mat-card-content class="post-content">
-    <p class="tags" *ngFor="let tag of post ? post.tags : []">{{tag}}</p>
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of post ? post.tags : []">{{tag}}</mat-chip>
+    </mat-chip-list>
     <p class="post-text" [class.show]="active">
       {{post ? post.content : ''}}
     </p>
@@ -37,9 +47,15 @@
             class="post-footer-item post-footer-dislike" (click)="vote($event, false)">Не нравится
     </button>
 
-    <span class="post-footer-item post-footer-meta" *ngIf="post"><img src="assets/like.png" alt="" class="like"/> <span
-      class="post-footer-item">{{post.likes}}</span></span>
-    <span class="post-footer-item post-footer-meta" *ngIf="post"><img src="assets/repost.png" alt=""
-                                                                      class="like"/> {{post.reposts}}</span>
+    <span class="post-footer-item post-footer-meta like-item like-repost">
+      <span class="post-footer-item post-footer-meta like-item" *ngIf="post">
+        <img src="assets/like.png" alt="" class="like"/>
+        <span class="like-text">{{post.likes}}</span>
+      </span>
+      <span class="post-footer-item post-footer-meta like-item" *ngIf="post">
+        <img src="assets/repost.png" alt="" class="like"/>
+        <span class="like-text">{{post.reposts}}</span>
+      </span>
+    </span>
   </mat-card-actions>
 </mat-card>
