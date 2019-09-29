@@ -11,16 +11,22 @@ public class Post {
     private final String celebName;
     private final String url2Profile;
     private final String postedTime;
+    private final String url2Post;
     private final Source postSource = Source.VK;
     private final String text;
 
     // TODO: init from server data
-    private Post(String avatarUrl, String celebName, String profileUrl, String time, String text) {
+    private Post(String avatarUrl, String celebName, String profileUrl, String postUrl, String time, String text) {
         path2Avatar = avatarUrl;
         this.celebName = celebName;
         url2Profile = profileUrl;
         postedTime = time;
+        this.url2Post = postUrl;
         this.text = text;
+    }
+
+    public String getUrl2Post() {
+        return url2Post;
     }
 
     public static Post getMockPost() {
@@ -36,6 +42,7 @@ public class Post {
                 "https://s9.stc.all.kpcdn.net/share/i/12/10274416/inx960x640.jpg",
                 "Ольга Бузова",
                 "https://vk.com/buzovaofficial",
+                "https://vk.com/wall-4887563_331976",
                 "18 сен в 16:33",
                 longText
         );
