@@ -55,10 +55,10 @@ if config['DEFAULT']['create_index'] == "True":
 search = whoosh_search.Searcher(config['DEFAULT']['index_root'], create)
 if create:
     search.create(storage.post_list)
-#
-# res = search.search("Полный список Умного голосования на выборах в Мосгордуму 2019")
-# for _id in res:
-#     print(json.dumps(storage.post_by_id(_id), ensure_ascii=False))
+
+res = search.search("Полный список Умного голосования на выборах в Мосгордуму 2019")
+for _id in res:
+    print(json.dumps(storage.post_by_id(_id), ensure_ascii=False))
 
 sgd = pickle.load(open("src/main/storage/model.ml", 'rb'))
 
@@ -140,6 +140,9 @@ def posts():
 
     grabbed = stories_grabber.grab(datetime.fromtimestamp(timestamp_start).date(),
                                    datetime.fromtimestamp(timestamp_finish).date())
+    grabbed = list(filter(lambda x: {
+        search.test(x.title)
+    }, grabbed))
     stories_list = list(map(lambda x: {
         'title': x.title,
         'date': time.mktime(x.story_date.timetuple())

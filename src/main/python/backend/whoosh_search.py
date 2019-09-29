@@ -31,9 +31,19 @@ class Searcher:
                                     content=text)
         writer.commit()
 
+    def test(self, query):
+        rank = 10
+        q = self.parser.parse(query)
+        res = self.ix.searcher().search(q, limit=5)
+        valid = True
+        for item in res:
+            if item.score < rank:
+                valid = False
+        return valid
+
     def search(self, query):
         q = self.parser.parse(query)
-        res = self.ix.searcher().search(q, limit=50)
+        res = self.ix.searcher().search(q, limit=5)
         ans = []
         for item in res:
             ans.append(item['id'])
