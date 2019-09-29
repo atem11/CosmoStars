@@ -56,7 +56,16 @@ search = whoosh_search.Searcher(config['DEFAULT']['index_root'], create)
 if create:
     search.create(storage.post_list)
 
-# res = search.search("театр и кино")
+# TEST
+# q1 = "Нотр-Дам"
+# q2 = "Богоматери"
+#
+# for post in storage.post_list:
+#     if q1 in post['text'] or q2 in post['text']:
+#         print(json.dumps(post, ensure_ascii=False))
+
+
+# res = search.search("собор Богоматери Нотр-Дам сгорел")
 # for _id in res:
 #     print(json.dumps(storage.post_by_id(_id), ensure_ascii=False))
 

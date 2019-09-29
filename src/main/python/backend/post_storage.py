@@ -9,7 +9,7 @@ from grubber import vk_grubber
 
 class Storage:
     def __init__(self):
-        self.time_window = 5500000
+        self.time_window = 27500000
         config = configparser.ConfigParser()
         config.read('src/main/resources/config.ini')
         self.vk_token = config['DEFAULT']['vk_token']
@@ -73,6 +73,7 @@ class Storage:
         upd = []
         for _id in self.celeb_ids:
             upd.extend(self.vk_grubber.posts(int(_id), self.last_timestamp, 0))
+            upd.extend(self.vk_grubber.posts(int(_id), self.last_timestamp, 100))
         upd = sorted(upd, key=lambda post: post['date'])
         self.post_list.extend(upd)
         self.last_timestamp = self.post_list[-1]['date']
