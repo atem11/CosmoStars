@@ -22,7 +22,7 @@
       <input matInput placeholder="Поиск по контактам" [formControl]="contactCtrl">
     </mat-form-field>
     <mat-list>
-      <mat-list-item *ngFor="let celeb of contactCelebrities.sort()">
+      <mat-list-item *ngFor="let celeb of (contactCelebrities ? contactCelebrities : []).sort()">
         <div class="celeb-contacts">
           <p>{{celeb}}</p>
           <mat-icon class="removeCeleb">cancel</mat-icon>

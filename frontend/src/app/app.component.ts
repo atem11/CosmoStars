@@ -174,8 +174,8 @@ export class AppComponent {
     this.posts = this.allPosts
       // .filter(post => post.status === 'unknown')
       .filter(post => this.celebrities.length === 0 || this.celebrities.includes(post.author))
-      .filter(post => this.range === undefined
-        || (post.timestamp * 1000 >= this.range.begin.getTime() && post.timestamp * 1000 <= this.range.end.getTime()))
+      // .filter(post => this.range === undefined
+      //   || (post.timestamp * 1000 >= this.range.begin.getTime() && post.timestamp * 1000 <= this.range.end.getTime()))
       .filter(post => this.tags.length === 0 || post.tags.filter(t => tagSet.has(t)).length > 0)
       .sort((post1, post2) =>
         post1.timestamp === post2.timestamp ? 0 : post1.timestamp > post2.timestamp ? -1 : 1);
