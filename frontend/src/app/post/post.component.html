@@ -9,6 +9,7 @@
   </mat-card-header>
   <mat-divider></mat-divider>
   <mat-card-content class="post-content">
+    <p class="tags" *ngFor="let tag of post ? post.tags : []">{{tag}}</p>
     <p class="post-text" [class.show]="active">
       {{post ? post.content : ''}}
     </p>

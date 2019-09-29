@@ -19,6 +19,7 @@
   font-size: 1.0625rem;
   line-height: 1.625rem;
   height: 3.250rem;
+  margin-top: 5px;
   overflow: hidden;
 }
 
@@ -40,6 +41,13 @@
 .post-footer-date {
   color: #8d8d8f;
   font-size: 12px;
+}
+
+.tags {
+  color: #8d8d8f;
+  font-size: 14px;
+  display: inline-block;
+  margin-right: 5px;
 }
 
 .post-footer-action {

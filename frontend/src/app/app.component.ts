@@ -153,6 +153,7 @@ export class AppComponent {
 
   onDateChangeEvent(event: SatDatepickerInputEvent<Date>) {
     this.range = event.value as SatDatepickerRangeValue<Date>;
+    this.updatePosts();
   }
 
   filter() {
